@@ -5,9 +5,6 @@
     align-items: center; 
     height: 100vh;
     background-color: #e7c177;
-    background-image: url('./images/Logo_eMnIA_New.PNG'); 
-    background-repeat: no-repeat; 
-    background-position: top left; 
     background-size: 200px auto; 
     box-sizing: border-box;  
   }
@@ -15,8 +12,11 @@
   /* Login section styling */
   .login-section {
     width:35%; 
-    height:65%;
+    height:75%;
     background-color: #f6f0f0; 
+    background-image: url('./images/Logo_EMNIA.png'); 
+    background-repeat: no-repeat; 
+    background-position: top center; 
     padding: 50px; 
     border-radius: 60px;  
     text-align: center; 
@@ -28,6 +28,7 @@
   .welcome-title {
       font-size: 40px; /* Larger font size for emphasis */
       color: #000000; /* Neutral dark color */
+      margin-top: 120px;
       margin-bottom: 10px; /* Spacing below the title */
   }
   
@@ -35,7 +36,7 @@
   .connexion-title {
       font-size: 30px; /* Smaller font size for secondary importance */
       color: #540404; /* Slightly lighter color */
-      margin-top: 0; /* Remove extra spacing above */
+      margin-top: 0px; /* Remove extra spacing above */
       margin-bottom: 20px; /* Adjust spacing below */
   }
   
