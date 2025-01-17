@@ -17,17 +17,18 @@
     padding: 10px 20px;
     margin-top: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 50%;
+    width: 30%;
     margin-left: auto; /* Align it to the right */
     border-radius: 10px; 
 }
 
 .nav {
     display: flex;
-    justify-content: center; /* Align the links to the right */
+    justify-content: space-between;
+    align-items: center;
     margin-right: 5px; 
     margin-top: 5px;
-    gap: 20px; 
+    gap: 50px; 
 }
 
 
@@ -45,13 +46,22 @@
 }
 
 .graphique {
-    background-color: #ccc;
-    height: 300px; /* Placeholder height for the graphique */
+    margin: 20px 0;
+    text-align: center;
+}
+
+.graphique-images {
     display: flex;
     justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    color: #666;
+    gap: 0px; /* Space between images */
+}
+
+.graphique-image {
+    width: 550px; /* Each image takes 48% of the width with some gap */
+    height: 320px; /* Maintain aspect ratio */
+    border: 2px solid #ddd; /* Optional: Border for styling */
+    border-radius: 8px; /* Optional: Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Shadow for aesthetics */
 }
 
 .form-section {
@@ -95,5 +105,5 @@
     position: relative;
     bottom: 0;
     width: 100%;
-    margin-top: 7vh;
+    margin-top: 4vh;
 }
