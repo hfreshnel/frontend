@@ -1,89 +1,254 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding: 20px;
-  }
-  
-  .main-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  .sections-wrapper {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    width: 100%;
-  }
-  
-  .personal-info-section,
-  .consultation-section {
-    flex: 1;
-    width: 100%;
-    min-width: 300px;
-    max-width: 400px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-  }
-  
-  .form-group label {
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .form-group input,
-  .form-group select {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .form-group input:disabled,
-  .form-group select:disabled {
-    background-color: #f5f5f5;
-    color: #999;
-  }
-  
-  .button-container {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
-  }
-  
-  .edit-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .edit-button:hover {
-    background-color: #0056b3;
-  }
+.fiche-kine-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.personal-info-container,
+.morphostatique-container,
+.anamnese-container,
+.travail-container,
+.vie-quotidienne-container {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.informations-personnelles,
+.morphostatique,
+.anamnese,
+.travail,
+.vie-quotidienne {
+  margin-bottom: 20px;
+}
+
+.informations-personnelles h2,
+.morphostatique h2,
+.anamnese h2,
+.travail h2,
+.vie-quotidienne h2 {
+  font-size: 24px;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.personnal-info-details,
+.morphostatique-details,
+.anamnese-details,
+.travail-details,
+.vie-quotidienne-details {
+  margin-top: 20px;
+}
+
+.personal-info-form .form-group,
+.morphostatique-form .form-group,
+.anamnese-form .form-group,
+.travail-form .form-group,
+.vie-quotidienne-form .form-group {
+  margin-bottom: 15px;
+}
+
+.personal-info-form label,
+.morphostatique-form label,
+.anamnese-form label,
+.travail-form label,
+.vie-quotidienne-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.personal-info-form input,
+.morphostatique-form input,
+.morphostatique-form textarea,
+.anamnese-form textarea,
+.travail-form input,
+.travail-form textarea,
+.vie-quotidienne-form textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.personal-info-form input:disabled,
+.morphostatique-form input:disabled,
+.morphostatique-form textarea:disabled,
+.anamnese-form textarea:disabled,
+.travail-form input:disabled,
+.travail-form textarea:disabled,
+.vie-quotidienne-form textarea:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+/* Modifications spécifiques pour rapprocher les points sélectionnables du texte */
+.morphostatique-form label,
+.travail-form label,
+.vie-quotidienne-form label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.morphostatique-form input[type="radio"],
+.morphostatique-form input[type="checkbox"],
+.travail-form input[type="radio"],
+.travail-form input[type="checkbox"],
+.vie-quotidienne-form input[type="radio"],
+.vie-quotidienne-form input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.morphostatique-form .latéralité div,
+.travail-form div,
+.vie-quotidienne-form div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.morphostatique-form label,
+.travail-form label,
+.vie-quotidienne-form label {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.morphostatique-form input[type="radio"]:disabled,
+.morphostatique-form input[type="checkbox"]:disabled,
+.travail-form input[type="radio"]:disabled,
+.travail-form input[type="checkbox"]:disabled,
+.vie-quotidienne-form input[type="radio"]:disabled,
+.vie-quotidienne-form input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+}
+
+.edit-button {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.edit-button:hover {
+  background-color: #2980b9;
+}
+
+.edit-button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+/* Bloc Travail */
+.travail-container {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.travail h2 {
+  font-size: 24px;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.travail-details {
+  margin-top: 20px;
+}
+
+.travail-form .form-group {
+  margin-bottom: 15px;
+}
+
+.travail-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.travail-form input[type="radio"],
+.travail-form input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.travail-form .form-group div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.travail-form label {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+/* Bloc Vie quotidienne */
+.vie-quotidienne-container {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.vie-quotidienne h2 {
+  font-size: 24px;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.vie-quotidienne-details {
+  margin-top: 20px;
+}
+
+.vie-quotidienne-form .form-group {
+  margin-bottom: 15px;
+}
+
+.vie-quotidienne-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.vie-quotidienne-form input[type="radio"],
+.vie-quotidienne-form input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.vie-quotidienne-form .form-group div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.vie-quotidienne-form label {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.vie-quotidienne-form input[type="radio"]:disabled,
+.vie-quotidienne-form input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+}
