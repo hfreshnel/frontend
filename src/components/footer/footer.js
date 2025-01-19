@@ -6,9 +6,9 @@ import logo from '../../assets/images/logo_2.png';
 const Footer = () => {
     return (
         <footer className="footer">
-        <div className="footer-logo">
-            <img src={logo} alt="Logo" />
-        </div>
+            <div className="footer-logo">
+                <img src={logo} alt="Logo" />
+            </div>
         </footer>
     );
 }
