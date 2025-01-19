@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./FicheClient.css";
 
 const PersonalInfo = () => {
@@ -65,7 +66,12 @@ const PersonalInfo = () => {
 
   return (
     <div className="fiche-kine-container">
-      <h1>Fiche Kiné</h1>
+      <h1>Fiche Client</h1>
+
+      {/* Bouton pour revenir à la page principale */}
+      <Link to="/" className="back-button">
+        Retour à la page principale
+      </Link>
 
       {/* Informations personnelles */}
       <div className="personal-info-container">

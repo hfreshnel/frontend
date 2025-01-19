@@ -252,3 +252,18 @@ h1 {
 .vie-quotidienne-form input[type="checkbox"]:disabled {
   cursor: not-allowed;
 }
+.back-button {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.back-button:hover {
+  background-color: #2980b9;
+}
