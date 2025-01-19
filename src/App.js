@@ -1,16 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
 import Login from "./pages/login/login";
 import SignUp from "./pages/register/register";
-import Dashboard from "./pages/dashboard/patient/dashboard";
+//import MainPage from "./pages/main";
+import Dashboard from "./pages/dashboard/kine/dashboard";
+import ProtectedRoute from "./protected_routes";
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   return (
     <Router>
         <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
             <Route path="/register" element={<SignUp />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={Dashboard} />} />
         </Routes>
     </Router>
   );

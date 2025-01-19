@@ -1,8 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./login.css"
 
 
-function Login(){
+function Login({ setIsAuthenticated }){
+    const navigate = useNavigate();
+
+    const handleLogin = () => {
+        setIsAuthenticated(true);
+        navigate("/dashboard");
+    }
+    
     return(
         <div className="login-container">
             <div className="login-section">
@@ -15,10 +23,10 @@ function Login(){
                 <label className="input-label">Mot de passe</label>
                 <input type="password" placeholder="Enter your password" className="input-field" />
                 
-                <button className="login-button">SE CONNECTER</button>
+                <button className="login-button" onClick={handleLogin}>SE CONNECTER</button>
 
                 <p>Créer un nouveau compte?{" "}
-                <a href="/register" className="register-link" target="_blank">Inscrivez-vous ici</a> 
+                <a href="/register" className="register-link">Inscrivez-vous ici</a> 
                 </p>
             </div>
 

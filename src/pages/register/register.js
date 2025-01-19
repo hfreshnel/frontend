@@ -1,10 +1,16 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./register.css";
 
 function SignUp() {
+    const navigate = useNavigate();
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isMatch, setIsMatch] = useState(false);
+
+    const handleRegister = () => {
+        navigate("/");
+    }
 
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
@@ -49,9 +55,9 @@ function SignUp() {
                         {isMatch && <span className="valid-icon">✔️</span>}
                     </div>
 
-                    <button type="submit">S'INSCRIRE</button>
+                    <button type="submit" onClick={handleRegister}>S'INSCRIRE</button>
                 </form>
-            </div>
+            </div> 
         </div>
     );
 }
