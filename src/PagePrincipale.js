@@ -17,6 +17,9 @@ const PagePrincipale = () => {
         <Link to="/fiche-kine" className="nav-link">
           Fiche Kiné
         </Link>
+        <Link to="/nouveau-patient" className="nav-link">
+          Nouveau Patient
+        </Link>
       </div>
       <footer className="footer">
         © 2025 Votre Application - Tous droits réservés
