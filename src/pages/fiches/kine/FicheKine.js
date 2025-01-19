@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./FicheKine.css";
 
 const PersonalInfo = () => {
@@ -25,6 +26,12 @@ const PersonalInfo = () => {
   return (
     <div className="fiche-kine-container">
       <h1>Fiche Kiné</h1>
+
+      {/* Bouton pour revenir à la page principale */}
+      <Link to="/" className="back-button">
+        Retour à la page principale
+      </Link>
+
       <div className="personal-info-container">
         <h2>Informations personnelles</h2>
         <form className="personal-info-form">

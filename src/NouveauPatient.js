@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./FicheClient.css";
+import "./NouveauPatient.css";
 
 const PersonalInfo = () => {
   const [formData, setFormData] = useState({
@@ -27,7 +27,7 @@ const PersonalInfo = () => {
     sportLoisirs: "",
   });
 
-  const [isEditable, setIsEditable] = useState(false);
+  const [isEditable, setIsEditable] = useState(true);
   const [isPersonalInfoOpen, setIsPersonalInfoOpen] = useState(true);
   const [isMorphostatiqueOpen, setIsMorphostatiqueOpen] = useState(true);
   const [isAnamneseOpen, setIsAnamneseOpen] = useState(true);
