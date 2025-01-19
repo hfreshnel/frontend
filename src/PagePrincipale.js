@@ -20,6 +20,9 @@ const PagePrincipale = () => {
         <Link to="/nouveau-patient" className="nav-link">
           Nouveau Patient
         </Link>
+        <Link to="/BDK" className="nav-link">
+          BDK
+        </Link>
       </div>
       <footer className="footer">
         © 2025 Votre Application - Tous droits réservés
