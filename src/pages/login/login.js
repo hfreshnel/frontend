@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css"
+import logo from "../../assets/images/logo_1.png";
 
 
 function Login({ setIsAuthenticated }){
@@ -14,6 +15,8 @@ function Login({ setIsAuthenticated }){
     return(
         <div className="login-container">
             <div className="login-section">
+                <img src={logo} alt="Logo" className="logo" />
+
                 <h1 className="welcome-title">Bienvenue!</h1>
                 <h2 className="connexion-title">Connexion</h2>
 
