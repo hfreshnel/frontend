@@ -1,35 +1,24 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Collapse from 'react-bootstrap/Collapse';
-import Card from 'react-bootstrap/Card';
+import './section.css';
 
-const Section = ({ title }) => {
-    const [open, setOpen] = useState(false);
+const CollapsibleSection = ({ title, children }) => {
+    const [collapsed, setCollapsed] = useState(true);
 
-    const toggleOpen = () => {
-        setOpen(!open);
+    const toggleCollapse = () => {
+        setCollapsed(!collapsed);
     };
 
     return (
-        
-        <section className="section">
-            <Card onClick={!open ? toggleOpen : ""}>
-                <Card.Body>
-                    <Card.Title 
-                        >
-                        {title}</Card.Title>
-                    <Collapse in={open}>
-                        <Card.Text>
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                            terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
-                            labore wes anderson cred nesciunt sapiente ea proident.
-                            <Button variant="primary" onClick={toggleOpen}>Enregistrer</Button>
-                        </Card.Text>
-                    </Collapse>
-                </Card.Body>
-            </Card>
-        </section>
+        <div className="section">
+            <div className="section-header" onClick={toggleCollapse}>
+                <h2>{title}</h2>
+                <span className="toggle-indicator">{collapsed ? '+' : '-'}</span>
+            </div>
+            <div className={`section-content ${collapsed ? 'collapsed' : ''}`}>
+                {children}
+            </div>
+        </div>
     );
-}
+};
 
-export default Section;
+export default CollapsibleSection;

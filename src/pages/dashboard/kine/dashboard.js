@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/header/header';
 import Footer from '../../../components/footer/footer';
 import './dashboard.css';
@@ -18,6 +19,7 @@ const patients = [
 
 const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
   const [patientList, setPatientList] = useState(patients);
 
   const handleSearch = (event) => {
