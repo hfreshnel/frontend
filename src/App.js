@@ -17,7 +17,7 @@ function App() {
             <Route path="/" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
             <Route path="/register" element={<SignUp />} />
             <Route path="/dashboard" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={Dashboard} />} />
-            <Route path="/dashboard_p" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={DashboardP} />} />
+            <Route path="/dashboard_p" element={<DashboardP />} />
             <Route path="/new" element={<NewPatient />} />
             <Route path="/bdk" element={<BDK />} />
         </Routes>
