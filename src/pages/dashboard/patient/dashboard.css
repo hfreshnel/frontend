@@ -2,39 +2,9 @@
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     color: #333;
-    padding: 20px;
+    padding: 0px;
     text-align: center;
 }
-
-.dashboard-header {
-    display: flex;
-    justify-content: flex-end;
-    background-color: #fff;
-    padding: 10px 20px;
-    margin-top: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 30%;
-    margin-left: auto; /* Align it to the right */
-    border-radius: 10px; 
-}
-
-.dashboard .nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-right: 5px; 
-    margin-top: 2px;
-    gap: 30px; 
-}
-
-
-.dashboard .nav a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: #0d0c0c;
-    
-}
-
 
 .dashboard-content {
     margin-top: 20px;

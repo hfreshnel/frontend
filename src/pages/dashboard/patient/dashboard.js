@@ -24,14 +24,6 @@ function Dashboard(){
         setShowDropdown(false); // Close the dropdown
     };
 
-    const customNav = (
-        <nav className="nav">
-            <a href="#patients">Mes patients</a>
-            <a href="#profile">Profil</a>
-            <a href="#logout" onClick={handleLogout}>Déconnexion</a>
-        </nav>
-    );
-
     const consultations = [
         {
             session: "01",
@@ -47,7 +39,7 @@ function Dashboard(){
 
     return (
         <div className="dashboard">
-            <Header customNav={customNav} />
+            <Header />
             <main className="dashboard-content">
                 <h1>Nom du patient</h1>
                 <div className="graphique">
