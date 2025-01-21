@@ -18,8 +18,9 @@ function App() {
             <Route path="/register" element={<SignUp />} />
             <Route path="/dashboard" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={Dashboard} />} />
             <Route path="/dashboard/patient/:patientId" element={<DashboardP />} />
-            <Route path="/new" element={<NewPatient />} />
-            <Route path="/bdk" element={<BDK />} />
+            <Route path="/dashboard/patient/new" element={<NewPatient />} />
+            <Route path="/patient/:patientId/fiche" element={<NewPatient />} />
+            <Route path="/patient/:patientId/new_bdk/:option" element={<BDK />} />
         </Routes>
     </Router>
   );

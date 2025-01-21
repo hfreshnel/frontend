@@ -29,7 +29,7 @@ const Dashboard = () => {
   const handleAddPatient = () => {
     //const newPatient = { id: patientList.length + 1, name: 'New Patient', age: 0, condition: 'Unknown' };
     //setPatientList([...patientList, newPatient]);
-    navigate('/new');
+    navigate('/dashboard/patient/new');
   };
 
   const handleSelectPatient = (patientId) => {

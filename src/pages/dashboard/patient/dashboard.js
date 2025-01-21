@@ -1,15 +1,34 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import './dashboard.css';
 //import articularImage from "../../../assets/images/articulaire.png";
 //import postureImage from '../../../assets/images/posture.jpg';
 import Header from '../../../components/header/header';
 import Footer from '../../../components/footer/footer';
 
+const patients = [
+    { id: 1, name: 'John Doe', age: 30, condition: 'Back Pain' },
+    { id: 2, name: 'Jane Smith', age: 25, condition: 'Knee Injury' },
+    { id: 3, name: 'Sam Johnson', age: 40, condition: 'Shoulder Pain' },
+    { id: 4, name: '', age: '', condition: '' },
+    { id: 5, name: '', age: '', condition: '' },
+    { id: 6, name: '', age: '', condition: '' },
+    { id: 7, name: '', age: '', condition: '' },
+    { id: 8, name: '', age: '', condition: '' },
+    { id: 9, name: '', age: '', condition: '' },
+    // Add more patients as needed
+  ];
+
 function Dashboard(){
     const navigate = useNavigate(); 
+    const { patientId } = useParams();
     const [showDropdown, setShowDropdown] = useState(false);
-  
+    const [patient, setPatient] = useState(null);
+
+    useEffect(() => {
+        const selectedPatient = patients.find(p => p.id === parseInt(patientId));
+        setPatient(selectedPatient);
+    }, [patientId]);
 
     const handleLogout = () => {
         // Perform any logout logic here (e.g., clearing session data)
@@ -20,8 +39,14 @@ function Dashboard(){
         setShowDropdown(!showDropdown);
     };
 
-    const handleOptionClick = (option) => {
+    const handleOptionClick = (patient, option) => {
+        // Perform the desired action based on the selected option
         setShowDropdown(false); // Close the dropdown
+        navigate(`/patient/${patient.id}/new_bdk/${option}`);
+    };
+
+    const gotoPatientFiche = (patient) => { 
+        navigate(`/patient/${patient.id}/fiche`);
     };
 
     const customNav = (
@@ -49,7 +74,7 @@ function Dashboard(){
         <div className="dashboard">
             <Header customNav={customNav} />
             <main className="dashboard-content">
-                <h1>Nom du patient</h1>
+                <h1>{patient ? patient.name : 'Patient not found'}</h1>
                 <div className="graphique">
                     <h2>Graphique</h2>
                 </div>
@@ -66,20 +91,20 @@ function Dashboard(){
                                 <div className="dropdown-options">
                                     <div
                                         className="dropdown-option"
-                                        onClick={() => handleOptionClick("Passif")}
+                                        onClick={() => handleOptionClick(patient, "Passif")}
                                     >
                                         Passif
                                     </div>
                                     <div
                                         className="dropdown-option"
-                                        onClick={() => handleOptionClick("Actif")}
+                                        onClick={() => handleOptionClick(patient, "Actif")}
                                     >
                                         Actif
                                     </div>
                                 </div>
                             )}
                         </div>
-                    <button id="informations" className="btn-informations">
+                    <button id="informations" className="btn-informations" onClick={() => gotoPatientFiche(patient)}>
                         Informations du patient
                     </button>
                 </div>
