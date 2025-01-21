@@ -6,6 +6,7 @@ import SignUp from "./pages/register/register";
 import Dashboard from "./pages/dashboard/kine/dashboard";
 import DashboardP from "./pages/dashboard/patient/dashboard";
 import ProtectedRoute from "./protected_routes";
+import Profile from "./pages/fiches/kine/FicheKine";
 
 import NewPatient from "./pages/new_patient/new_patient";
 import BDK from "./pages/bdk/bdk";
@@ -16,6 +17,7 @@ function App() {
         <Routes>
             <Route path="/" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
             <Route path="/register" element={<SignUp />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={Dashboard} />} />
             <Route path="/dashboard/patient/:patientId" element={<DashboardP />} />
             <Route path="/dashboard/patient/new" element={<NewPatient />} />

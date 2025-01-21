@@ -10,8 +10,8 @@ const Header = () => {
       </div>
       <nav className="header-nav">
           <ul>
-            <li><a href="#patients">Mes patients</a></li>
-            <li><a href="#profile">Profil</a></li>
+            <li><a href="/dashboard">Mes patients</a></li>
+            <li><a href="/profile">Profil</a></li>
             <li className="header-logout">
               <button>Déconnexion</button>
             </li>
