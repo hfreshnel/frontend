@@ -5,6 +5,14 @@
   margin: 0 auto;
 }
 
+header {
+  width: 100%; /* Full width */
+}
+
+footer {
+  width: 100%; /* Full width */
+}
+
 h1 {
   text-align: center;
   color: #333;
