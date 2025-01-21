@@ -32,6 +32,11 @@ const Dashboard = () => {
     navigate('/new');
   };
 
+  const handleSelectPatient = (patientId) => {
+    // Navigate to the patient's details page with the selected patient's ID
+    navigate(`/dashboard/patient/${patientId}`);
+  };
+
   const filteredPatients = patientList.filter(patient =>
     patient.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -40,8 +45,7 @@ const Dashboard = () => {
     <>
       <Header />
       <div className="dashboard">
-        <h1>Kine Dashboard</h1>
-        <h2>Mes patient</h2>
+        <h2>Mes patients</h2>
         <div>
           <input
             type="text"
@@ -62,7 +66,7 @@ const Dashboard = () => {
           </thead>
           <tbody>
             {filteredPatients.map(patient => (
-              <tr key={patient.id}>
+              <tr key={patient.id} onClick={() => handleSelectPatient(patient.id)}>
                 <td>{patient.name}</td>
                 <td>{patient.age}</td>
                 <td>{patient.condition}</td>
