@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./new_patient.css";
 import Header from "../../components/header/header";
@@ -35,7 +35,10 @@ const PersonalInfo = () => {
   const [isAnamneseOpen, setIsAnamneseOpen] = useState(true);
   const [isTravailOpen, setIsTravailOpen] = useState(true);
   const [isVieQuotidienneOpen, setIsVieQuotidienneOpen] = useState(true);
-
+  const [isRecording, setIsRecording] = useState(false);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "typeTravail" || name === "situation" || name === "lieuVie") {
@@ -65,7 +68,43 @@ const PersonalInfo = () => {
       setIsVieQuotidienneOpen(!isVieQuotidienneOpen);
     }
   };
-
+  const toggleRecording = async () => {
+    if (!isRecording) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorderRef.current = mediaRecorder;
+        audioChunksRef.current = [];
+  
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            audioChunksRef.current.push(event.data);
+          }
+        };
+  
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(audioChunksRef.current, { type: "audio/wav" });
+          const audioUrl = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.style.display = "none";
+          a.href = audioUrl;
+          a.download = "recording.wav";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        };
+  
+        mediaRecorder.start();
+        setIsRecording(true);
+      } catch (error) {
+        console.error("Error accessing microphone: ", error);
+      }
+    } else {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+  
   return (
     <>
     <Header />
@@ -76,6 +115,9 @@ const PersonalInfo = () => {
         <Link to="/" className="back-button">
           Retour à la page principale
         </Link>
+        <button className="audio-button" onClick={toggleRecording}>
+          {isRecording ? "Arrêter l'enregistrement" : "Enregistrement audio"}
+        </button>
 
         {/* Informations personnelles */}
         <div className="personal-info-container">
