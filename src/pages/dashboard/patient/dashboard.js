@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../../AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 import './dashboard.css';
 //import articularImage from "../../../assets/images/articulaire.png";
@@ -20,10 +21,12 @@ const patients = [
   ];
 
 function Dashboard(){
+    const { user } = useContext(AuthContext);
     const navigate = useNavigate(); 
     const { patientId } = useParams();
     const [showDropdown, setShowDropdown] = useState(false);
     const [patient, setPatient] = useState(null);
+
 
     useEffect(() => {
         const selectedPatient = patients.find(p => p.id === parseInt(patientId));
@@ -69,6 +72,11 @@ function Dashboard(){
             pdf: "consultation_patient_record.pdf",
         },
     ];
+
+    if (!user) {
+        console.error('User not found in AuthContext');
+        return <h1>You are not logged in.</h1>;
+    }
 
     return (
         <div className="dashboard">

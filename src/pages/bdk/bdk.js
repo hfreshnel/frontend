@@ -1,8 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
+import { AuthContext } from "../../AuthContext";
 import { Link } from "react-router-dom";
 import "./bdk.css";
 
 const BDK = () => {
+  const { user } = useContext(AuthContext);
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [videoDevices, setVideoDevices] = useState([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState("");
@@ -44,6 +46,11 @@ const BDK = () => {
       setIsCameraOn(false);
     }
   };
+
+  if (!user) {
+    console.error('User not found in AuthContext');
+    return <h1>You are not logged in.</h1>;
+  }
 
   return (
     <div className="bdk-container">

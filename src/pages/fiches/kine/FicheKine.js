@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../../../AuthContext";
 import { Link } from "react-router-dom";
 import "./FicheKine.css";
 
 const PersonalInfo = () => {
+  const { user } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     nom: "",
     prenom: "",
@@ -22,6 +24,11 @@ const PersonalInfo = () => {
   const toggleEdit = () => {
     setIsEditable(!isEditable);
   };
+
+  if (!user) {
+    console.error('User not found in AuthContext');
+    return <h1>You are not logged in.</h1>;
+  }
 
   return (
     <div className="fiche-kine-container">

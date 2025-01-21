@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import React, { useState } from "react";
+import { useState } from "react";
 import Login from "./pages/login/login";
 import SignUp from "./pages/register/register";
 //import MainPage from "./pages/main";
@@ -11,14 +11,14 @@ import Profile from "./pages/fiches/kine/FicheKine";
 import NewPatient from "./pages/new_patient/new_patient";
 import BDK from "./pages/bdk/bdk";
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState();
   return (
     <Router>
         <Routes>
-            <Route path="/" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+            <Route path="/" element={<Login user={user}/>} />
             <Route path="/register" element={<SignUp />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/dashboard" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={Dashboard} />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/patient/:patientId" element={<DashboardP />} />
             <Route path="/dashboard/patient/new" element={<NewPatient />} />
             <Route path="/patient/:patientId/fiche" element={<NewPatient />} />

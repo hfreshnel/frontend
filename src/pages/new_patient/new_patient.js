@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../../AuthContext";
 import { Link } from "react-router-dom";
 import "./new_patient.css";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
 
 const PersonalInfo = () => {
+  const { user } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     nom: "",
     prenom: "",
@@ -65,6 +67,11 @@ const PersonalInfo = () => {
       setIsVieQuotidienneOpen(!isVieQuotidienneOpen);
     }
   };
+
+  if (!user) {
+    console.error('User not found in AuthContext');
+    return <h1>You are not logged in.</h1>;
+  }
 
   return (
     <>

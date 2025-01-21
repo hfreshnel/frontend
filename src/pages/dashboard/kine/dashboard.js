@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../../AuthContext';
 import Header from '../../../components/header/header';
 import Footer from '../../../components/footer/footer';
 import './dashboard.css';
@@ -18,17 +19,22 @@ const patients = [
 ];
 
 const Dashboard = () => {
+  const { user } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const [patientList, setPatientList] = useState(patients);
+
+  console.log('Dashboard component rendered');
+  if (!user) {
+    console.error('User not found in AuthContext');
+    return <h1>You are not logged in.</h1>;
+  }
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
 
   const handleAddPatient = () => {
-    //const newPatient = { id: patientList.length + 1, name: 'New Patient', age: 0, condition: 'Unknown' };
-    //setPatientList([...patientList, newPatient]);
     navigate('/dashboard/patient/new');
   };
 
