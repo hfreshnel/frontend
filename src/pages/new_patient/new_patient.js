@@ -115,6 +115,7 @@ const PersonalInfo = () => {
         <Link to="/" className="back-button">
           Retour à la page principale
         </Link>
+        {/* Bouton enregistrement audio */}
         <button className="audio-button" onClick={toggleRecording}>
           {isRecording ? "Arrêter l'enregistrement" : "Enregistrement audio"}
         </button>
