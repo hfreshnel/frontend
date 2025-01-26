@@ -15,10 +15,6 @@ body {
   background-color: #fff;
 }
 
-header {
-  width: 100%; /* Ensures the header spans the full width */
-}
-
 
 h1 {
   font-size: 2rem;
