@@ -41,7 +41,7 @@ const Dashboard = () => {
       <Header />
       <div className="dashboard">
         <h1>Kine Dashboard</h1>
-        <h2>Mes patient</h2>
+        <h2>Mes patients</h2>
         <div>
           <input
             type="text"
