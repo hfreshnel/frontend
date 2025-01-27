@@ -52,14 +52,6 @@ function Dashboard(){
         navigate(`/patient/${patient.id}/fiche`);
     };
 
-    const customNav = (
-        <nav className="nav">
-            <a href="#patients">Mes patients</a>
-            <a href="#profile">Profil</a>
-            <a href="#logout" onClick={handleLogout}>Déconnexion</a>
-        </nav>
-    );
-
     const consultations = [
         {
             session: "01",
@@ -80,7 +72,7 @@ function Dashboard(){
 
     return (
         <div className="dashboard">
-            <Header customNav={customNav} />
+            <Header />
             <main className="dashboard-content">
                 <h1>{patient ? patient.name : 'Patient not found'}</h1>
                 <div className="graphique">
