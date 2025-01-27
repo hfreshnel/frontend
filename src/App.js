@@ -1,8 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from "react";
 import Login from "./pages/login/login";
 import SignUp from "./pages/register/register";
-//import MainPage from "./pages/main";
 import Dashboard from "./pages/dashboard/kine/dashboard";
 import DashboardP from "./pages/dashboard/patient/dashboard";
 import ProtectedRoute from "./protected_routes";
