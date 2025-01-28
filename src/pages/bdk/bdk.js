@@ -29,15 +29,31 @@ const BDK = () => {
   // Activer la webcam
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { deviceId: { exact: selectedDeviceId } },
-      });
+      const constraints = selectedDeviceId
+        ? { video: { deviceId: { exact: selectedDeviceId } } }
+        : { video: true };
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       videoRef.current.srcObject = stream;
       videoRef.current.play();
       streamRef.current = stream;
       setIsCameraOn(true);
     } catch (error) {
-      console.error("Erreur lors de l'accès à la webcam :", error);
+      if (error.name === 'OverconstrainedError') {
+        console.error("Constraints cannot be satisfied by available devices:", error);
+        // Fallback to default video constraints
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
+          streamRef.current = stream;
+          setIsCameraOn(true);
+        } catch (fallbackError) {
+          console.error("Error accessing the webcam with fallback constraints:", fallbackError);
+        }
+      } else {
+        console.error("Error accessing the webcam:", error);
+      }
     }
   };
 
