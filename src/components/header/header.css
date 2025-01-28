@@ -3,20 +3,29 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #eaeaea;
+    background-color: #fcfcfc;
+    border-bottom: 1px solid #e0e0e0;
+    width: 100%; 
+    box-sizing: border-box; 
+    overflow: hidden;
   }
   
   .header-logo img {
-    height: 50px; /* Ajustez la taille selon votre design */
+    height: 55px; 
   }
   
+
   .header-nav ul {
     list-style: none;
     display: flex;
     gap: 20px;
     margin: 0;
     padding: 0;
+  }
+
+  .header-nav li {
+    display: flex;
+    align-items: center;
   }
   
   .header-nav a {
@@ -27,6 +36,23 @@
   }
   
   .header-nav a:hover {
-    color: #007bff;
+    color: #090909; 
+  }
+
+  .header-logout button {
+    background-color: #706666; 
+    color: #ffffff; 
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: -8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
   }
   
+  .header-logout button:hover {
+    background-color: #616060; 
+    transform: scale(1.05); 
+  }

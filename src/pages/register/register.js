@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./register.css";
+import logo from "../../assets/images/logo_1.png";
 
 function SignUp() {
     const navigate = useNavigate();
@@ -25,6 +26,7 @@ function SignUp() {
     return (
         <div className="signup-container">
             <div className="signup-section">
+            <img src={logo} alt="Logo" className="signup-logo" />
                 <h1>Créer votre compte</h1>
                 <form>
                     <label>Nom</label>

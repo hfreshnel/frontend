@@ -2,43 +2,9 @@
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     color: #333;
-    padding: 20px;
-    background-image: url('../../../assets/images/logo_1.png'); 
-    background-repeat: no-repeat; 
-    background-size: 220px auto; 
-    background-position: top left;
+    padding: 0px;
     text-align: center;
 }
-
-.dashboard-header {
-    display: flex;
-    justify-content: flex-end;
-    background-color: #fff;
-    padding: 10px 20px;
-    margin-top: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 30%;
-    margin-left: auto; /* Align it to the right */
-    border-radius: 10px; 
-}
-
-.nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-right: 5px; 
-    margin-top: 5px;
-    gap: 50px; 
-}
-
-
-.nav a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: #333;
-    
-}
-
 
 .dashboard-content {
     margin-top: 20px;
@@ -46,30 +12,21 @@
 }
 
 .graphique {
-    margin: 20px 0;
-    text-align: center;
-}
-
-.graphique-images {
+    background-color: #ccc;
+    height: 300px; 
     display: flex;
     justify-content: center;
-    gap: 0px; /* Space between images */
-}
-
-.graphique-image {
-    width: 550px; /* Each image takes 48% of the width with some gap */
-    height: 320px; /* Maintain aspect ratio */
-    border: 2px solid #ddd; /* Optional: Border for styling */
-    border-radius: 8px; /* Optional: Rounded corners */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Shadow for aesthetics */
+    align-items: center;
+    font-size: 24px;
+    color: #666;
 }
 
 .form-section {
     margin-top: 30px;
     display: flex;
     flex-direction: column;
-    align-items: center; 
-    padding-left: 20px;
+    align-items: flex-start; 
+    padding-left: 30px;
 }
 
 .form-section label {
@@ -79,31 +36,122 @@
 }
 
 .form-section select {
-    width: 80px; /* Adjust the width */
-    padding: 5px; /* Adjust internal padding */
-    margin-bottom: 10px; /* Add space below the dropdown */
+    width: 80px; 
+    padding: 5px; 
+    margin-bottom: 10px; 
 }
 
 .form-section button {
-    width: 250px; /* Set width of the button */
-    padding: 10px; /* Adjust padding to make the button look better */
-    margin-bottom: 5px; /* Space below the button */
+    width: 280px; 
+    padding: 10px; 
+    margin-bottom: 5px; 
     margin-top: 8px;
     font-size: 16px;
-    background-color: #1c2936; /* Button color */
-    color: white; /* Button text color */
-    border-radius: 10px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    text-align: center; /* Align text inside button */
+    background-color: #445769; 
+    color: white; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    text-align: left; 
 }
 
-.dashboard-footer {
-    background-color: #5d90c7;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
+.dropdown {
     position: relative;
-    bottom: 0;
-    width: 100%;
-    margin-top: 4vh;
+    display: inline-block;
+}
+
+.dropdown-button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 250px; /* Adjust width if needed */
+    background-color: #fff;
+}
+
+.dropdown-icon {
+    transition: transform 0.3s ease;
+}
+
+.dropdown-icon.open {
+    transform: rotate(180deg);
+}
+
+.dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 250px;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-option {
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.dropdown-option:hover {
+    background-color: #f0f0f0;
+}
+
+.consultations-section {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.consultations-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    color: #302323;
+}
+
+.consultations-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.consultation-item {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    gap: 5px;
+}
+
+.consultation-item span {
+    font-size: 16px;
+    color: #333;
+    flex: 0,5; /* Ensures even spacing between session, date, and link */
+    text-align: center;
+}
+
+.pdf-link {
+    text-decoration: none;
+    color: #007BFF;
+    font-size: 14px;
+    font-weight: bold;
+    transition: color 0.3s;
+
+}
+
+.pdf-link:hover {
+    color: #0056b3;
 }

@@ -1,8 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
+import { AuthContext } from "../../AuthContext";
 import { Link } from "react-router-dom";
 import "./bdk.css";
+import Header from '../../components/header/header';
+import Footer from '../../components/footer/footer';
+
 
 const BDK = () => {
+  const { user } = useContext(AuthContext);
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [videoDevices, setVideoDevices] = useState([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState("");
@@ -45,8 +50,14 @@ const BDK = () => {
     }
   };
 
+  if (!user) {
+    console.error('User not found in AuthContext');
+    return <h1>You are not logged in.</h1>;
+  }
+
   return (
     <div className="bdk-container">
+      <Header />
       {/* Bouton pour revenir à la page principale */}
       <Link to="/" className="back-button">
         Retour à la page principale
@@ -127,6 +138,7 @@ const BDK = () => {
           </tr>
         </tbody>
       </table>
+      <Footer />
     </div>
   );
 };

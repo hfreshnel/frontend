@@ -267,4 +267,22 @@
   .back-button:hover {
     background-color: #2980b9;
   }
+  .audio-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+    color: white;
+    text-align: center;
+    transition: background-size 0.5s, transform 0.2s;
+    background-size: 200% auto;
+  }
+  
+  .audio-button:hover {
+    background-position: right center;
+    transform: scale(1.1);
+  }
   

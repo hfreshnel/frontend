@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../../AuthContext';
 import Header from '../../../components/header/header';
 import Footer from '../../../components/footer/footer';
 import './dashboard.css';
@@ -18,18 +19,28 @@ const patients = [
 ];
 
 const Dashboard = () => {
+  const { user } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const [patientList, setPatientList] = useState(patients);
+
+  console.log('Dashboard component rendered');
+  if (!user) {
+    console.error('User not found in AuthContext');
+    return <h1>You are not logged in.</h1>;
+  }
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
 
   const handleAddPatient = () => {
-    //const newPatient = { id: patientList.length + 1, name: 'New Patient', age: 0, condition: 'Unknown' };
-    //setPatientList([...patientList, newPatient]);
-    navigate('/new');
+    navigate('/dashboard/patient/new');
+  };
+
+  const handleSelectPatient = (patientId) => {
+    // Navigate to the patient's details page with the selected patient's ID
+    navigate(`/dashboard/patient/${patientId}`);
   };
 
   const filteredPatients = patientList.filter(patient =>
@@ -40,7 +51,6 @@ const Dashboard = () => {
     <>
       <Header />
       <div className="dashboard">
-        <h1>Kine Dashboard</h1>
         <h2>Mes patients</h2>
         <div>
           <input
@@ -62,7 +72,7 @@ const Dashboard = () => {
           </thead>
           <tbody>
             {filteredPatients.map(patient => (
-              <tr key={patient.id}>
+              <tr key={patient.id} onClick={() => handleSelectPatient(patient.id)}>
                 <td>{patient.name}</td>
                 <td>{patient.age}</td>
                 <td>{patient.condition}</td>
