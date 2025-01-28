@@ -268,21 +268,27 @@
     background-color: #2980b9;
   }
   .audio-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
+    display: flex; /* Pour aligner l'image et le texte */
+    align-items: center; /* Centre verticalement l'image et le texte */
+    gap: 0.5rem; /* Ajoute un espace entre l'image et le texte */
+    padding: 0.5rem 1rem; /* Espacement interne */
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+    border-radius: 8px;
+    background: linear-gradient(to right, #4caf50, #45a049); /* Exemple de gradient */
     color: white;
-    text-align: center;
-    transition: background-size 0.5s, transform 0.2s;
-    background-size: 200% auto;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s, background-position 0.3s;
   }
   
   .audio-button:hover {
     background-position: right center;
     transform: scale(1.1);
   }
+  
+  .audio-icon {
+    width: 20px; /* Taille de l'image */
+    height: 20px;
+  }
+  
   
