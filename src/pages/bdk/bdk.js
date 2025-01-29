@@ -10,9 +10,10 @@ const BDK = () => {
   const { user } = useContext(AuthContext);
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [videoDevices, setVideoDevices] = useState([]);
-  const [selectedDeviceId, setSelectedDeviceId] = useState("");
+  const [selectedDeviceId, setSelectedDeviceId] = useState(null);
   const videoRef = useRef(null);
   const streamRef = useRef(null);
+  const wsRef = useRef(null);
 
   // Liste des caméras disponibles
   const listDevices = async () => {
@@ -38,6 +39,37 @@ const BDK = () => {
       videoRef.current.play();
       streamRef.current = stream;
       setIsCameraOn(true);
+
+      // Open WebSocket connection
+      wsRef.current = new WebSocket('ws://localhost:3001');
+      wsRef.current.onopen = () => {
+        console.log('WebSocket connection opened');
+      };
+      wsRef.current.onclose = () => {
+        console.log('WebSocket connection closed');
+      };
+
+      // Send video frames to WebSocket server
+      const sendVideoFrames = () => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = videoRef.current.videoWidth;
+        canvas.height = videoRef.current.videoHeight;
+
+        const sendFrame = () => {
+          if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+            context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+            canvas.toBlob((blob) => {
+              wsRef.current.send(blob);
+            }, 'image/jpeg');
+          }
+          requestAnimationFrame(sendFrame);
+        };
+
+        sendFrame();
+      };
+
+      sendVideoFrames();
     } catch (error) {
       if (error.name === 'OverconstrainedError') {
         console.error("Constraints cannot be satisfied by available devices:", error);
@@ -63,6 +95,9 @@ const BDK = () => {
       streamRef.current.getTracks().forEach((track) => track.stop());
       videoRef.current.srcObject = null;
       setIsCameraOn(false);
+    }
+    if (wsRef.current) {
+      wsRef.current.close();
     }
   };
 
