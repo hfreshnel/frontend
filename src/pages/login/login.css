@@ -41,8 +41,8 @@ width: 100%;
   .connexion-title {
       font-size: 30px; /* Smaller font size for secondary importance */
       color: #540404; /* Slightly lighter color */
-      margin-top: 0px; /* Remove extra spacing above */
-      margin-bottom: 20px; /* Adjust spacing below */
+      margin-top: 0%; /* Remove extra spacing above */
+      margin-bottom: 5%; /* Adjust spacing below */
   }
   
   .input-label {
