@@ -52,7 +52,10 @@ const PersonalInfo = () => {
       setFormData({ ...formData, [name]: value });
     }
   };
-
+const handleAddPatient = () => {
+    // Logique pour ajouter un patient
+    console.log("Ajout Patient");
+  };
   const toggleEdit = () => {
     setIsEditable(!isEditable);
   };
