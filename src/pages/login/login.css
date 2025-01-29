@@ -10,7 +10,7 @@ width: 100%;
   }
 
   .logo {
-    width: 280px; /* Adjust the size of the logo */
+    width: 50%; /* Adjust the size of the logo */
     height: auto; /* Maintain aspect ratio */
     margin-top: -65px; /* Optional: Adjust top margin */
     padding-top: 10px;
