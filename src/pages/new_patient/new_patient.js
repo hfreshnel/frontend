@@ -129,7 +129,7 @@ const PersonalInfo = () => {
         <button className="audio-button" onClick={toggleRecording}>
 <img 
             src={isRecording ? micOn : micOff} 
-            alt=          {isRecording ? "Micro allumé" : "Micro éteint"}
+            alt={isRecording ? "Micro allumé" : "Micro éteint"} 
 className="mic-icon"
           />
         </button>
