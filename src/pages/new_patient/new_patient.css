@@ -268,21 +268,52 @@
     background-color: #2980b9;
   }
   .audio-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
+    padding: 10px;
     border: none;
-    border-radius: 4px;
+    border-radius: 50%;
     cursor: pointer;
     background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-    color: white;
-    text-align: center;
     transition: background-size 0.5s, transform 0.2s;
     background-size: 200% auto;
-  }
-  
-  .audio-button:hover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.audio-button:hover {
     background-position: right center;
     transform: scale(1.1);
-  }
-  
+}
+
+.mic-icon {
+    width: 32px; /* Taille ajustable */
+    height: 32px;
+    display: block; /* Assure que l'image ne se cache pas */
+}.audio-button {
+  padding: 10px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background: white;
+  transition: background 0.3s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.audio-button:hover {
+  background: black;
+  transform: scale(1.1);
+}
+
+.audio-button:hover .mic-icon {
+  filter: invert(1);
+}
+
+.mic-icon {
+  width: 24px;
+  height: 24px;
+  transition: filter 0.3s;
+}
+
