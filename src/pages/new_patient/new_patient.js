@@ -127,7 +127,11 @@ const PersonalInfo = () => {
         </Link>
         {/* Bouton enregistrement audio */}
         <button className="audio-button" onClick={toggleRecording}>
-          {isRecording ? "Arrêter l'enregistrement" : "Enregistrement audio"}
+<img 
+            src={isRecording ? micOn : micOff} 
+            alt=          {isRecording ? "Micro allumé" : "Micro éteint"}
+className="mic-icon"
+          />
         </button>
 
         {/* Informations personnelles */}
