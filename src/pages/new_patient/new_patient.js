@@ -127,10 +127,10 @@ const PersonalInfo = () => {
         </Link>
         {/* Bouton enregistrement audio */}
         <button className="audio-button" onClick={toggleRecording}>
-<img 
-            src={isRecording ? micOn : micOff} 
+          <img 
+            src={isRecording ? micOff : micOn} 
             alt={isRecording ? "Micro allumé" : "Micro éteint"} 
-className="mic-icon"
+            className="mic-icon"
           />
         </button>
 
