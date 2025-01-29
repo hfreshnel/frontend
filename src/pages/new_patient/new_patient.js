@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import "./new_patient.css";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
-import micOn from "C:/Users/robin/Desktop/school/eMnIA/frontend/src/assets/mic_on.svg";
-import micOff from "C:/Users/robin/Desktop/school/eMnIA/frontend/src/assets/mic_off.svg";
+import micOn from "../../assets/images/mic_on.svg";
+import micOff from "../../assets/images/mic_off.svg";
 
 const PersonalInfo = () => {
   const { user } = useContext(AuthContext);
