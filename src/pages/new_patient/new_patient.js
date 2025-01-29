@@ -761,6 +761,9 @@ const handleAddPatient = () => {
             {isEditable ? "Finir modification" : "Modifier"}
           </button>
         </div>
+        <button className="add-patient-button" onClick={handleAddPatient}>
+           Ajout Patient
+        </button>
       </div>
       <Footer />
     </>
