@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center; 
     align-items: center; 
-width: 100%;
+    width: 100%;
     height: 100%;
     background-color: #e7c177;
     box-sizing: border-box;  
@@ -67,8 +67,8 @@ width: 100%;
 }
 
   .login-button {
-  width: 55%; 
-  height: 50%; 
+  width: 100%; 
+  height: 30%; 
   background: linear-gradient(145deg, #a38408, #d0be18); /* Gradient background */
   color: #fff; 
   border: none; 
