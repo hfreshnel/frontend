@@ -52,10 +52,7 @@ const PersonalInfo = () => {
       setFormData({ ...formData, [name]: value });
     }
   };
-  const handleAddPatient = () => {
-    // Logique pour ajouter un patient
-    console.log("Ajout Patient");
-  };
+ 
   const toggleEdit = () => {
     setIsEditable(!isEditable);
   };
@@ -761,9 +758,9 @@ const PersonalInfo = () => {
             {isEditable ? "Finir modification" : "Modifier"}
           </button>
         </div>
-        <button className="add-patient-button" onClick={handleAddPatient}>
-           Ajout Patient
-        </button>
+        <Link to="/" className="back-button">
+          Retour à la page principale
+        </Link>
       </div>
       <Footer />
     </>
