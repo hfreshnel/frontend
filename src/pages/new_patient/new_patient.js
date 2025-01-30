@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import "./new_patient.css";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
+import micOn from "../../assets/images/mic_on.svg";
+import micOff from "../../assets/images/mic_off.svg";
 
 const PersonalInfo = () => {
   const { user } = useContext(AuthContext);
@@ -125,7 +127,11 @@ const PersonalInfo = () => {
         </Link>
         {/* Bouton enregistrement audio */}
         <button className="audio-button" onClick={toggleRecording}>
-          {isRecording ? "Arrêter l'enregistrement" : "Enregistrement audio"}
+          <img 
+            src={isRecording ? micOff : micOn} 
+            alt={isRecording ? "Micro allumé" : "Micro éteint"} 
+            className="mic-icon"
+          />
         </button>
 
         {/* Informations personnelles */}
