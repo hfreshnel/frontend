@@ -136,7 +136,8 @@ export const getConsultations = async (patientId) => {
     if (!response.ok) {
       throw new Error("Failed to get consultations");
     }
-    return await response.json();
+    const data = await response.json();
+    return data.consultations;
   } catch (error) {
     console.error("Failed to get consultations", error);
     return [];

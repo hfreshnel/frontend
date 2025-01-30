@@ -1,24 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../../AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
+import { getPatientById, getConsultations } from "../../../api/fetching";
 import './dashboard.css';
 //import articularImage from "../../../assets/images/articulaire.png";
 //import postureImage from '../../../assets/images/posture.jpg';
 import Header from '../../../components/header/header';
 import Footer from '../../../components/footer/footer';
-
-const patients = [
-    { id: 1, name: 'John Doe', age: 30, condition: 'Back Pain' },
-    { id: 2, name: 'Jane Smith', age: 25, condition: 'Knee Injury' },
-    { id: 3, name: 'Sam Johnson', age: 40, condition: 'Shoulder Pain' },
-    { id: 4, name: '', age: '', condition: '' },
-    { id: 5, name: '', age: '', condition: '' },
-    { id: 6, name: '', age: '', condition: '' },
-    { id: 7, name: '', age: '', condition: '' },
-    { id: 8, name: '', age: '', condition: '' },
-    { id: 9, name: '', age: '', condition: '' },
-    // Add more patients as needed
-  ];
 
 function Dashboard(){
     const { user } = useContext(AuthContext);
@@ -26,12 +14,29 @@ function Dashboard(){
     const { patientId } = useParams();
     const [showDropdown, setShowDropdown] = useState(false);
     const [patient, setPatient] = useState(null);
+    const [consultations, setConsultations] = useState([]);
 
 
     useEffect(() => {
-        const selectedPatient = patients.find(p => p.id === parseInt(patientId));
-        setPatient(selectedPatient);
-    }, [patientId]);
+        const fetchPatient = async () => {
+          if (patientId) {
+            const fetchedPatient = await getPatientById(patientId);
+            console.log('Fetched patient:', fetchedPatient); // Log the response
+            setPatient(fetchedPatient);
+          }
+        };
+
+        const fetchConsultations = async () => {
+            if (patientId) {
+              const fetchedConsultations = await getConsultations(patientId);
+              console.log('Fetched consultations:', fetchedConsultations); // Log the response
+              setConsultations(fetchedConsultations);
+            }
+          };
+    
+        fetchPatient();
+        fetchConsultations();
+      }, [patientId]);
 
     const handleLogout = () => {
         // Perform any logout logic here (e.g., clearing session data)
@@ -52,29 +57,20 @@ function Dashboard(){
         navigate(`/patient/${patient.id}/fiche`);
     };
 
-    const consultations = [
-        {
-            session: "01",
-            date: "12 Decembre 2024",
-            pdf: "consultation_patient_record.pdf",
-        },
-        {
-            session: "02",
-            date: "08 Janvier 2025",
-            pdf: "consultation_patient_record.pdf",
-        },
-    ];
-
     if (!user) {
         console.error('User not found in AuthContext');
         return <h1>You are not logged in.</h1>;
+    }
+
+    if (!patient) {
+        return <div>Loading...</div>;
     }
 
     return (
         <div className="dashboard">
             <Header />
             <main className="dashboard-content">
-                <h1>{patient ? patient.name : 'Patient not found'}</h1>
+                <h1>{patient.nom} {patient.prenom}</h1>
                 <div className="graphique">
                     <h2>Graphique</h2>
                 </div>
