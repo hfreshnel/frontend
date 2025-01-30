@@ -24,7 +24,7 @@ body, html {
   .logo {
     width: 50%; /* Adjust the size of the logo */
     height: auto; /* Maintain aspect ratio */
-    margin-top: -5%; /* Optional: Adjust top margin */
+    margin-top: -13%; /* Optional: Adjust top margin */
     padding-top: 2%;
     display: block; /* Center the logo in the section */
 }
