@@ -67,7 +67,8 @@ export const getPatients = async (kineId) => {
     if (!response.ok) {
       throw new Error("Failed to get patients");
     }
-    return await response.json();
+    const data = await response.json();
+    return data.patients;
   } catch (error) {
     console.error("Failed to get patients", error);
     return [];
