@@ -22,7 +22,7 @@ body, html {
   }
 
   .logo {
-    width: 50%; /* Adjust the size of the logo */
+    width: 45%; /* Adjust the size of the logo */
     height: auto; /* Maintain aspect ratio */
     margin-top: -13%; /* Optional: Adjust top margin */
     padding-top: 2%;
