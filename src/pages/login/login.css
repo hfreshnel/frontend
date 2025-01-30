@@ -68,11 +68,11 @@ body, html {
   
   .input-field {
   width: 100%; 
-  padding: 8%; 
+  padding: 5%; 
   margin-bottom: 3%; 
   border: 1px solid #000000; 
   border-radius: 5px; 
-  font-size: 100%; 
+  font-size: 150%; 
   box-sizing: border-box; 
   color: #000000;
   background-color: #f9f9f9; /* Light background for input */
