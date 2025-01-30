@@ -72,11 +72,6 @@ const PersonalInfo = () => {
       <div className="fiche-kine-container">
         <h1>Fiche Client</h1>
 
-        {/* Bouton pour revenir à la page principale */}
-        <Link to="/" className="back-button">
-          Retour à la page principale
-        </Link>
-
         {/* Informations personnelles */}
         <div className="personal-info-container">
           <div className="informations-personnelles">
