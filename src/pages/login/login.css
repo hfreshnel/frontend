@@ -67,8 +67,8 @@ body, html {
 }
   
   .input-field {
-  width: 85%; 
-  padding: 4%; 
+  width: 100%; 
+  padding: 8%; 
   margin-bottom: 3%; 
   border: 100% solid #000000; 
   border-radius: 10px; 
