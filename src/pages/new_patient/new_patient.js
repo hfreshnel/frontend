@@ -117,12 +117,8 @@ const PersonalInfo = () => {
     <>
     <Header />
       <div className="fiche-kine-container">
-        <h1>Fiche Client</h1>
+        <h1>Nouveau patient</h1>
 
-        {/* Bouton pour revenir à la page principale */}
-        <Link to="/" className="back-button">
-          Retour à la page principale
-        </Link>
         {/* Bouton enregistrement audio */}
         <button className="audio-button" onClick={toggleRecording}>
           {isRecording ? "Arrêter l'enregistrement" : "Enregistrement audio"}
