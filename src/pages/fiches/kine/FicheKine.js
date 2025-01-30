@@ -40,11 +40,6 @@ const PersonalInfo = () => {
         
           <h1>Fiche Kiné</h1>
 
-        {/* Bouton pour revenir à la page principale */}
-        <Link to="/" className="back-button">
-          Retour à la page principale
-        </Link>
-
         <div className="personal-info-container">
           <h2>Informations personnelles</h2>
           <form className="personal-info-form">
