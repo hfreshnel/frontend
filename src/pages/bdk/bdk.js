@@ -41,35 +41,44 @@ const BDK = () => {
       setIsCameraOn(true);
 
       // Open WebSocket connection
-      wsRef.current = new WebSocket('ws://localhost:3001');
+      wsRef.current = new WebSocket('ws://localhost:8080/ws/video');
       wsRef.current.onopen = () => {
         console.log('WebSocket connection opened');
       };
+      
       wsRef.current.onclose = () => {
         console.log('WebSocket connection closed');
       };
 
-      // Send video frames to WebSocket server
-      const sendVideoFrames = () => {
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        canvas.width = videoRef.current.videoWidth;
-        canvas.height = videoRef.current.videoHeight;
+      // Wait until the video is ready
+      videoRef.current.onloadedmetadata = () => {
+        // Send video frames to WebSocket server
+        const sendVideoFrames = () => {
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          canvas.width = videoRef.current.videoWidth;
+          canvas.height = videoRef.current.videoHeight;
 
-        const sendFrame = () => {
-          if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-            context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-            canvas.toBlob((blob) => {
-              wsRef.current.send(blob);
-            }, 'image/jpeg');
-          }
-          requestAnimationFrame(sendFrame);
+          const sendFrame = () => {
+            if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+              context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+              canvas.toBlob((blob) => {
+                if (blob) {
+                  console.log('Sending frame:', blob);
+                  wsRef.current.send(blob);
+                } else {
+                  console.error('Failed to create blob from canvas');
+                }
+              }, 'image/jpeg');
+            }
+            requestAnimationFrame(sendFrame);
+          };
+
+          sendFrame();
         };
 
-        sendFrame();
+        sendVideoFrames();
       };
-
-      sendVideoFrames();
     } catch (error) {
       if (error.name === 'OverconstrainedError') {
         console.error("Constraints cannot be satisfied by available devices:", error);
