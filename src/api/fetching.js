@@ -23,7 +23,7 @@ export const postNewKine = async (kine) => {
 //connect kine
 export const connectUser = async (email, password) => {
   try {
-    const response = await fetch(`${API_URL}/kine/login`, {
+    const response = await fetch(`${API_URL}/kine/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
