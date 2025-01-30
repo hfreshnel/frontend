@@ -37,7 +37,7 @@
 
 .signup-section label {
     display: block; /* Make each label occupy a new line */
-    margin: 10px 0 0px; /* Space between label and input */
+    margin: 0.5%; /* Space between label and input */
     text-align: center; /* Center the label */
     font-weight: bold;
 }
