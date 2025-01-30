@@ -21,10 +21,10 @@
 }
 
 .signup-logo {
-    width: 300px; /* Adjust the size of the logo */
+    width: 45%; /* Adjust the size of the logo */
     height: auto; /* Maintain aspect ratio */
-    margin-bottom: 5px; /* Add spacing below the logo */
-    margin-top: -40px; /* Adjust top spacing (optional) */
+    margin-bottom: 1%; /* Add spacing below the logo */
+    margin-top: -5%; /* Adjust top spacing (optional) */
     display: center; /* Center the logo */
 }
 
