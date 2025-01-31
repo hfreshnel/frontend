@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import { connectUser } from "./api/fetching";
 
 // Create AuthContext
 export const AuthContext = createContext();
@@ -10,18 +11,10 @@ export const AuthProvider = ({ children }) => {
 
     // Simulated login function
     const login = (username, password) => {
-        // Simulate an API call
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                if (username && password) {
-                    const mockUser = { id: 1, name: username, email: `${username}@example.com` };
-                    setUser(mockUser);
-                    localStorage.setItem("user", JSON.stringify(mockUser)); // Persist user data
-                    resolve(mockUser);
-                } else {
-                    reject("Invalid credentials");
-                }
-            }, 1000);
+        return connectUser(username, password).then((user) => {
+            console.log("user: ", user);
+            setUser(user);
+            localStorage.setItem("user", JSON.stringify(user));
         });
     };
 

@@ -1,28 +1,38 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../AuthContext';
+import { getPatients } from '../../../api/fetching';
 import Header from '../../../components/header/header';
 import Footer from '../../../components/footer/footer';
 import './dashboard.css';
 
-const patients = [
+/*const patients = [
   { id: 1, name: 'John Doe', age: 30, condition: 'Back Pain' },
   { id: 2, name: 'Jane Smith', age: 25, condition: 'Knee Injury' },
   { id: 3, name: 'Sam Johnson', age: 40, condition: 'Shoulder Pain' },
-  { id: 4, name: '', age: '', condition: '' },
-  { id: 5, name: '', age: '', condition: '' },
-  { id: 6, name: '', age: '', condition: '' },
-  { id: 7, name: '', age: '', condition: '' },
-  { id: 8, name: '', age: '', condition: '' },
-  { id: 9, name: '', age: '', condition: '' },
-  // Add more patients as needed
-];
+];*/
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-  const [patientList, setPatientList] = useState(patients);
+  const [patientList, setPatientList] = useState([]);
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      if (user && user.id) {
+        const patients = await getPatients(user.id);
+        console.log('Patients:', patients);
+        if (Array.isArray(patients)) {
+          setPatientList(patients);
+        } else {
+          console.error('Expected an array of patients, but got:', patients);
+        }
+      }
+    };
+
+    fetchPatients();
+  }, [user]);
 
   console.log('Dashboard component rendered');
   if (!user) {
@@ -44,7 +54,7 @@ const Dashboard = () => {
   };
 
   const filteredPatients = patientList.filter(patient =>
-    patient.name.toLowerCase().includes(searchTerm.toLowerCase())
+    `${patient.nom} ${patient.prenom}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -65,17 +75,15 @@ const Dashboard = () => {
         <table className="patients-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Age</th>
-              <th>Condition</th>
+              <th>Nom</th>
+              <th>Prénom</th>
             </tr>
           </thead>
           <tbody>
             {filteredPatients.map(patient => (
               <tr key={patient.id} onClick={() => handleSelectPatient(patient.id)}>
-                <td>{patient.name}</td>
-                <td>{patient.age}</td>
-                <td>{patient.condition}</td>
+                <td>{patient.nom}</td>
+                <td>{patient.prenom}</td>
               </tr>
             ))}
           </tbody>
