@@ -6,12 +6,6 @@ import Header from '../../../components/header/header';
 import Footer from '../../../components/footer/footer';
 import './dashboard.css';
 
-/*const patients = [
-  { id: 1, name: 'John Doe', age: 30, condition: 'Back Pain' },
-  { id: 2, name: 'Jane Smith', age: 25, condition: 'Knee Injury' },
-  { id: 3, name: 'Sam Johnson', age: 40, condition: 'Shoulder Pain' },
-];*/
-
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState('');

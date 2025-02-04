@@ -194,3 +194,76 @@ export const streamVideo = async (videoBlob) => {
     return null;
   }
 };
+
+//post audio file
+export const sendAudioToAPI = async (blob) => {
+  const formData = new FormData();
+  formData.append('file', blob, 'recording.wav');
+
+  try {
+    const response = await fetch('http://localhost:8000/transcription/speech-to-text/', {
+      method: 'POST',
+      body: formData,
+    });
+    // Vérifier si la réponse est OK
+  if (!response.ok) {
+    throw new Error(`Erreur HTTP: ${response.status}`);
+  }
+
+    const result = await response.json();
+    console.log('Success:', result);
+    console.log(result.transcription);
+      // Envoyer la transcription à une deuxième API
+      try {
+        const sendTextToAPI = await fetch('http://localhost:8082/ner_task/extract_entities', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body:  JSON.stringify({
+            text: result.transcription, 
+          }),
+        });
+
+        // Vérifier si la réponse de la deuxième API est OK
+        if (!sendTextToAPI.ok) {
+          throw new Error(`Erreur HTTP (deuxième API): ${sendTextToAPI.status}`);
+        }
+
+        const sendTextToAPIResult = await sendTextToAPI.json();
+        console.log('Success:', sendTextToAPIResult);
+        // Retourner le résultat de la deuxième API
+        return sendTextToAPIResult;
+
+      } catch (sendTextToAPIError) {
+        console.error('Erreur lors de l\'envoi à la deuxième API:', sendTextToAPIError);
+      }
+  } catch (error) {
+    console.error('Error uploading audio:', error);
+  }
+};
+
+//upload video
+export const uploadVideo = async (videoBlob, genouId) => {
+  const formData = new FormData();
+  formData.append('file', videoBlob, 'video.mp4');
+
+  try {
+    const response = await fetch(`${API_URL}/upload/${genouId}`, {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+      },
+      body: formData,
+    });
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP: ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log('Success:', result);
+    return result;
+  } catch (error) {
+    console.error('Error uploading video:', error);
+  }
+};

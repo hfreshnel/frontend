@@ -1,9 +1,17 @@
 import React from "react";
 import './form.css'
 
-const DynamicForm = ({ fields, onSubmit }) => {
+const DynamicForm = ({ fields, onSubmit, values, setValues }) => {
+    const handleChange = (e) => {
+        console.log("handleChange ",e.target);
+        const { name, value } = e.target;
+        setValues((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+    };
     return (
-        <form onSubmit={onSubmit} className="dynamic-form grid-layout">
+        <div className="dynamic-form grid-layout">
             {fields.map((field, index) => (
                 <div key={index} className={`form-group grid-item ${field.type === 'textarea' ? 'textarea-item' : ''}`}>
                     <label className="form-label">{field.label}</label>
@@ -28,6 +36,8 @@ const DynamicForm = ({ fields, onSubmit }) => {
                         <textarea
                             id={field.name}
                             name={field.name}
+                            value={values[field.name] || ""}
+                            onChange={handleChange}
                             className="form-textarea"
                         />
                     ) : (
@@ -35,14 +45,14 @@ const DynamicForm = ({ fields, onSubmit }) => {
                         <input
                             type={field.type}
                             name={field.name}
-                            defaultValue={field.defaultValue || ""}
+                            value={values[field.name] || ""}
+                            onChange={handleChange}
                             className="form-input"
                         />
                     )}
                 </div>
             ))}
-            <button type="submit" className="form-submit-button">Submit</button>
-        </form>
+        </div>
     );
 }
 

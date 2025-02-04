@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../AuthContext";
+import { uploadVideo } from "../../api/fetching"; // Import the uploadVideo function
 import "./bdk.css";
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
@@ -10,8 +12,22 @@ const BDK = () => {
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [videoDevices, setVideoDevices] = useState([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState("");
+  const { patientId, option } = useParams();
+  const initialAngles = option === "1" ? {
+    "genou-droit-flexion": "estimation en cours",
+    "genou-droit-extension": "estimation en cours",
+    "genou-gauche-flexion": "NA",
+    "genou-gauche-extension": "NA",
+  } : {
+    "genou-droit-flexion": "NA",
+    "genou-droit-extension": "NA",
+    "genou-gauche-flexion": "estimation en cours",
+    "genou-gauche-extension": "estimation en cours",
+  };
+  const [angles, setAngles] = useState(initialAngles);
   const videoRef = useRef(null);
   const streamRef = useRef(null);
+  const navigate = useNavigate();
 
   // Liste des caméras disponibles
   const listDevices = async () => {
@@ -57,11 +73,45 @@ const BDK = () => {
   };
 
   // Désactiver la webcam
-  const stopCamera = () => {
+  const stopCamera = async () => {
     if (streamRef.current) {
-      streamRef.current.getTracks().forEach((track) => track.stop());
-      videoRef.current.srcObject = null;
-      setIsCameraOn(false);
+      const tracks = streamRef.current.getTracks();
+      const mediaRecorder = new MediaRecorder(streamRef.current);
+      const chunks = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        chunks.push(event.data);
+      };
+
+      mediaRecorder.onstop = async () => {
+        const blob = new Blob(chunks, { type: 'video/mp4' });
+        const response = await uploadVideo(blob, option);
+        if (response && response.angles) {
+          if (option === "1") {
+            setAngles({
+              "genou-droit-flexion": response.angles.Flexion,
+              "genou-droit-extension": response.angles.Extension,
+              "genou-gauche-flexion": "NA",
+              "genou-gauche-extension": "NA",
+            });
+          } else if (option === "0") {
+            setAngles({
+              "genou-droit-flexion": "NA",
+              "genou-droit-extension": "NA",
+              "genou-gauche-flexion": response.angles.Flexion,
+              "genou-gauche-extension": response.angles.Extension,
+            });
+          }
+        }
+      };
+
+      mediaRecorder.start();
+      setTimeout(() => {
+        mediaRecorder.stop();
+        tracks.forEach((track) => track.stop());
+        videoRef.current.srcObject = null;
+        setIsCameraOn(false);
+      }, 1000); // Adjust the timeout as needed
     }
   };
 
@@ -124,12 +174,12 @@ const BDK = () => {
           </tr>
           <tr>
             <td className="sub-row">Flexion</td>
-            <td>estimation en cours</td>
+            <td data-id="genou-droit-flexion">{angles["genou-droit-flexion"]}</td>
             <td></td>
           </tr>
           <tr>
             <td className="sub-row">Extension</td>
-            <td>estimation en cours</td>
+            <td data-id="genou-droit-extension">{angles["genou-droit-extension"]}</td>
             <td></td>
           </tr>
           <tr>
@@ -139,16 +189,21 @@ const BDK = () => {
           </tr>
           <tr>
             <td className="sub-row">Flexion</td>
-            <td>NA</td>
+            <td data-id="genou-gauche-flexion">{angles["genou-gauche-flexion"]}</td>
             <td></td>
           </tr>
           <tr>
             <td className="sub-row">Extension</td>
-            <td>NA</td>
+            <td data-id="genou-gauche-extension">{angles["genou-gauche-extension"]}</td>
             <td></td>
           </tr>
         </tbody>
       </table>
+
+      <button onClick={() => navigate(`/dashboard/patient/${patientId}`)} className="validation-button">
+        Valider
+      </button>
+
       <Footer />
     </div>
   );

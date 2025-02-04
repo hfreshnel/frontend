@@ -38,11 +38,6 @@ function Dashboard(){
         fetchConsultations();
       }, [patientId]);
 
-    const handleLogout = () => {
-        // Perform any logout logic here (e.g., clearing session data)
-        navigate("/"); // Navigate to the Login page
-    };
-
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
     };
@@ -87,15 +82,15 @@ function Dashboard(){
                                 <div className="dropdown-options">
                                     <div
                                         className="dropdown-option"
-                                        onClick={() => handleOptionClick(patient, "Passif")}
+                                        onClick={() => handleOptionClick(patient, 1)}
                                     >
-                                        Passif
+                                        Genou droit
                                     </div>
                                     <div
                                         className="dropdown-option"
-                                        onClick={() => handleOptionClick(patient, "Actif")}
+                                        onClick={() => handleOptionClick(patient, 0)}
                                     >
-                                        Actif
+                                        Genou gauche
                                     </div>
                                 </div>
                             )}
