@@ -244,12 +244,12 @@ export const sendAudioToAPI = async (blob) => {
 };
 
 //upload video
-export const uploadVideo = async (videoBlob, genouId) => {
+export const uploadVideo = async (videoBlob, genouId, patientId) => {
   const formData = new FormData();
   formData.append('file', videoBlob, 'video.mp4');
 
   try {
-    const response = await fetch(`${API_URL}/upload/${genouId}`, {
+    const response = await fetch(`${API_URL}/upload/${genouId}/${patientId}`, {
       method: 'POST',
       headers: {
         'accept': 'application/json',

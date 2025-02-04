@@ -85,7 +85,7 @@ const BDK = () => {
 
       mediaRecorder.onstop = async () => {
         const blob = new Blob(chunks, { type: 'video/mp4' });
-        const response = await uploadVideo(blob, option);
+        const response = await uploadVideo(blob, option, patientId);
         if (response && response.angles) {
           if (option === "1") {
             setAngles({
