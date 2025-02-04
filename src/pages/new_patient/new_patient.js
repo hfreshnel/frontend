@@ -51,66 +51,91 @@ const PersonalInfo = () => {
           travail: travail
   });
 
-  const handleOnsubmit = (e) => {
+  const handleOnsubmit = (e, sectionName) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    console.log("Form Data:", data);
+    console.log(`Section: ${sectionName}`, data);
 
-    const updatedPatient = {
-      ...newPatient,
-      nom: data.name,
-      prenom: data.surname,
-      date_naissance: data.birthday,
-      sexe: data.gender,
-      email: data.email,
-      tel: data.phone,
-      carte_vitale: data.socialSecurityNumber,
-      adresse: {
-        ...newPatient.adresse,
-        rue: data.address,
-        code_postal: data.postalCode,
-        ville: data.city,
-        pays: data.country
-      },
-      morphostatique: {
-        ...newPatient.morphostatique,
-        taille: data.taille,
-        poids: data.poids,
-        lateralite: data.lateralite,
-        remarque: data.remarque
-      },
-      anamnese: {
-        ...newPatient.anamnese,
-        historique_maladie: data.hystory,
-        antecedents: data["ante-medical"],
-        antecedents_chirurgicaux: data["ante-chirurgical"],
-        antecedents_familiaux: data["ante-familial"]
-      },
-      travail: {
-        ...newPatient.travail,
-        situation_actuelle: data["situation-actuelle"],
-        type_travail: data["type-travail"],
-        profession: data.profession
-      },
-      vieQuotidienne: {
-        ...newPatient.vieQuotidienne,
-        lieu_vie: data["lieu-vie"],
-        alimentation: data.alimentation,
-        sports: data.sports,
-        loisirs: data.loisirs,
-        vie_privee: data["vie-privee"]
-      }
-    };
+    setNewPatient((prevPatient) => {
+        const updatedPatient = (() => {
+            switch (sectionName) {
+                case "Administratif":
+                    return {
+                        ...prevPatient,
+                        nom: data.name,
+                        prenom: data.surname,
+                        date_naissance: data.birthday,
+                        sexe: data.gender,
+                        email: data.email,
+                        tel: data.phone,
+                        carte_vitale: data.socialSecurityNumber,
+                        adresse: {
+                            ...prevPatient.adresse,
+                            rue: data.address,
+                            code_postal: data.postalCode,
+                            ville: data.city,
+                            pays: data.country
+                        }
+                    };
+                case "Morphostatique":
+                    return {
+                        ...prevPatient,
+                        morphostatique: {
+                            ...prevPatient.morphostatique,
+                            taille: data.taille,
+                            poids: data.poids,
+                            lateralite: data.lateralite,
+                            remarque: data.remarque
+                        }
+                    };
+                case "Anamnèse":
+                    return {
+                        ...prevPatient,
+                        anamnese: {
+                            ...prevPatient.anamnese,
+                            historique_maladie: data.hystory,
+                            antecedents: data["ante-medical"],
+                            antecedents_chirurgicaux: data["ante-chirurgical"],
+                            antecedents_familiaux: data["ante-familial"]
+                        }
+                    };
+                case "Situation professionnelle":
+                    return {
+                        ...prevPatient,
+                        travail: {
+                            ...prevPatient.travail,
+                            situation_actuelle: data["situation-actuelle"],
+                            type_travail: data["type-travail"],
+                            profession: data.profession
+                        }
+                    };
+                case "Vie quotidienne":
+                    return {
+                        ...prevPatient,
+                        vieQuotidienne: {
+                            ...prevPatient.vieQuotidienne,
+                            lieu_vie: data["lieu-vie"],
+                            alimentation: data.alimentation,
+                            sports: data.sports,
+                            loisirs: data.loisirs,
+                            vie_privee: data["vie-privee"]
+                        }
+                    };
+                default:
+                    return prevPatient;
+            }
+        })();
 
-    console.log(updatedPatient);
-    postNewPatient(updatedPatient).then(() => {
-      navigate('/dashboard');
-    }).catch((error) => {
-      console.error('Error posting new patient:', error);
+        console.log(updatedPatient);
+        postNewPatient(updatedPatient).then(() => {
+            navigate('/dashboard');
+        }).catch((error) => {
+            console.error('Error posting new patient:', error);
+        });
+        return updatedPatient;
     });
-
-    setNewPatient(updatedPatient);
+    
   };
 
   if (!user) {
@@ -126,19 +151,20 @@ const PersonalInfo = () => {
       <Header />
       <h1>Nouveau patient</h1>
       
-      <form onSubmit={handleOnsubmit} className="form-container">
+      <div className="form-container">
         <Microphone updatePatient={setNewPatient}/>
         {sections.map((section, index) => (
           <CollapsibleSection key={index} title={section.title}>
             <DynamicForm 
               fields={section.fields} 
+              onSubmit={handleOnsubmit} 
+              sectionName={section.title}
               values={newPatient}
               setValues={setNewPatient}
             />
           </CollapsibleSection>
         ))}
-        <button type="submit" className="form-submit-button">Enregistrer</button>
-      </form>
+      </div>
       <Footer />
     </>
   );
