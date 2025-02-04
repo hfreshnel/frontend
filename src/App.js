@@ -6,6 +6,7 @@ import Dashboard from "./pages/dashboard/kine/dashboard";
 import DashboardP from "./pages/dashboard/patient/dashboard";
 import Profile from "./pages/fiches/kine/FicheKine";
 import FicheClient from "./pages/fiches/patient/FicheClient";
+import Consultation from "./pages/consultation/consulation";
 
 import NewPatient from "./pages/new_patient/new_patient";
 import BDK from "./pages/bdk/bdk";
@@ -22,6 +23,7 @@ function App() {
             <Route path="/dashboard/patient/new" element={<NewPatient />} />
             <Route path="/patient/:patientId/fiche" element={<FicheClient />} />
             <Route path="/patient/:patientId/new_bdk/:option" element={<BDK />} />
+            <Route path="/patient/:patientId/consultation/" element={<Consultation />} />
         </Routes>
     </Router>
   );

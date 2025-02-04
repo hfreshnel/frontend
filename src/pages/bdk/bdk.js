@@ -115,6 +115,10 @@ const BDK = () => {
     }
   };
 
+  const handleValidation = () => {
+    navigate(`/patient/${patientId}/consultation`, { state: { angles } });
+  };
+
   if (!user) {
     console.error('User not found in AuthContext');
     return <h1>You are not logged in.</h1>;
@@ -200,7 +204,7 @@ const BDK = () => {
         </tbody>
       </table>
 
-      <button onClick={() => navigate(`/dashboard/patient/${patientId}`)} className="validation-button">
+      <button onClick={handleValidation} className="validation-button">
         Valider
       </button>
 
