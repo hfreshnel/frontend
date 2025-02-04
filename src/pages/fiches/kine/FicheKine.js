@@ -1,5 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, use } from "react";
 import { AuthContext } from "../../../AuthContext";
+import { updateKine } from "../../../api/fetching";
 import { Link } from "react-router-dom";
 import "./FicheKine.css";
 import Header from '../../../components/header/header';
@@ -7,29 +8,65 @@ import Footer from '../../../components/footer/footer';
 
 
 const PersonalInfo = () => {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({
+    id: "",
     nom: "",
     prenom: "",
-    dateDeNaissance: "",
-    telephone: "",
+    tel: "",
+    mdp: "",
     email: "",
-    adresse: "",
+    adresse: {
+      rue: "",
+      ville: "",
+      code_postal: ""
+    }
   });
 
   const [isEditable, setIsEditable] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if (name in formData.adresse) {
+      setFormData({ ...formData, adresse: { ...formData.adresse, [name]: value } });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
-  const toggleEdit = () => {
+  const toggleEdit = async () => {
+    if (isEditable) {
+      try {
+        const response = await updateKine(formData);
+        setUser(response);
+      } catch (error) {
+        console.error('Failed to update user:', error);
+      }
+    }
     setIsEditable(!isEditable);
   };
 
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        id: user.id,
+        nom: user.nom,
+        prenom: user.prenom,
+        tel: user.tel,
+        mdp: user.mdp,
+        email: user.email,
+        adresse: {
+          rue: user.adresse.rue,
+          ville: user.adresse.ville,
+          code_postal: user.adresse.code_postal
+        }
+      });
+    } else {
+      console.error('User not found in AuthContext');
+    }
+  }, [user]);
+
   if (!user) {
-    console.error('User not found in AuthContext');
     return <h1>You are not logged in.</h1>;
   }
 
@@ -37,9 +74,7 @@ const PersonalInfo = () => {
     <>
       <Header />
       <div className="fiche-kine-container">
-        
-          <h1>Fiche Kiné</h1>
-
+        <h1>Fiche Kiné</h1>
         <div className="personal-info-container">
           <h2>Informations personnelles</h2>
           <form className="personal-info-form">
@@ -66,23 +101,12 @@ const PersonalInfo = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="dateDeNaissance">Date de naissance</label>
-              <input
-                type="date"
-                id="dateDeNaissance"
-                name="dateDeNaissance"
-                value={formData.dateDeNaissance}
-                onChange={handleChange}
-                disabled={!isEditable}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="telephone">Numéro de téléphone</label>
+              <label htmlFor="tel">Numéro de téléphone</label>
               <input
                 type="tel"
-                id="telephone"
-                name="telephone"
-                value={formData.telephone}
+                id="tel"
+                name="tel"
+                value={formData.tel}
                 onChange={handleChange}
                 disabled={!isEditable}
               />
@@ -99,12 +123,34 @@ const PersonalInfo = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="adresse">Adresse</label>
+              <label htmlFor="rue">Rue</label>
               <input
                 type="text"
-                id="adresse"
-                name="adresse"
-                value={formData.adresse}
+                id="rue"
+                name="rue"
+                value={formData.adresse.rue}
+                onChange={handleChange}
+                disabled={!isEditable}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="ville">Ville</label>
+              <input
+                type="text"
+                id="ville"
+                name="ville"
+                value={formData.adresse.ville}
+                onChange={handleChange}
+                disabled={!isEditable}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="code_postal">Code Postal</label>
+              <input
+                type="text"
+                id="code_postal"
+                name="code_postal"
+                value={formData.adresse.code_postal}
                 onChange={handleChange}
                 disabled={!isEditable}
               />
