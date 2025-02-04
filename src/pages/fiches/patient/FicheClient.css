@@ -91,7 +91,6 @@ h1 {
   cursor: not-allowed;
 }
 
-/* Modifications spécifiques pour rapprocher les points sélectionnables du texte */
 .morphostatique-form label,
 .travail-form label,
 .vie-quotidienne-form label {
@@ -115,15 +114,6 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-}
-
-.morphostatique-form label,
-.travail-form label,
-.vie-quotidienne-form label {
-  display: inline-flex;
-  align-items: center;
-  margin-right: 10px;
-  cursor: pointer;
 }
 
 .morphostatique-form input[type="radio"]:disabled,
@@ -154,104 +144,6 @@ h1 {
   cursor: not-allowed;
 }
 
-/* Bloc Travail */
-.travail-container {
-  margin-top: 20px;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-}
-
-.travail h2 {
-  font-size: 24px;
-  color: #2c3e50;
-  margin: 0;
-}
-
-.travail-details {
-  margin-top: 20px;
-}
-
-.travail-form .form-group {
-  margin-bottom: 15px;
-}
-
-.travail-form label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.travail-form input[type="radio"],
-.travail-form input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-.travail-form .form-group div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.travail-form label {
-  display: inline-flex;
-  align-items: center;
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-/* Bloc Vie quotidienne */
-.vie-quotidienne-container {
-  margin-top: 20px;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-}
-
-.vie-quotidienne h2 {
-  font-size: 24px;
-  color: #2c3e50;
-  margin: 0;
-}
-
-.vie-quotidienne-details {
-  margin-top: 20px;
-}
-
-.vie-quotidienne-form .form-group {
-  margin-bottom: 15px;
-}
-
-.vie-quotidienne-form label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.vie-quotidienne-form input[type="radio"],
-.vie-quotidienne-form input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-.vie-quotidienne-form .form-group div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.vie-quotidienne-form label {
-  display: inline-flex;
-  align-items: center;
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-.vie-quotidienne-form input[type="radio"]:disabled,
-.vie-quotidienne-form input[type="checkbox"]:disabled {
-  cursor: not-allowed;
-}
 .back-button {
   display: inline-block;
   margin-bottom: 20px;

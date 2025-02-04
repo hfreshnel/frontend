@@ -1,19 +1,25 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState,useEffect } from "react";
+import { useParams } from "react-router-dom";
 import "./FicheClient.css";
-import Header from '../../../components/header/header';
-import Footer from '../../../components/footer/footer';
+import { getPatientById, updatePatient } from "../../../api/fetching";
+import Header from "../../../components/header/header"; 
+import Footer from "../../../components/footer/footer";
 
 const PersonalInfo = () => {
+  const { patientId } = useParams();
   const [formData, setFormData] = useState({
+    id: "",
     nom: "",
     prenom: "",
+    kineId: "",
+    sexe: "",
     dateDeNaissance: "",
     telephone: "",
     email: "",
     adresse: "",
     taille: "",
     poids: "",
+    carteVitale: "",
     lateralite: "",
     remarque: "",
     histoireMaladie: "",
@@ -30,15 +36,54 @@ const PersonalInfo = () => {
   });
 
   const [isEditable, setIsEditable] = useState(false);
-  const [isPersonalInfoOpen, setIsPersonalInfoOpen] = useState(true);
-  const [isMorphostatiqueOpen, setIsMorphostatiqueOpen] = useState(true);
-  const [isAnamneseOpen, setIsAnamneseOpen] = useState(true);
-  const [isTravailOpen, setIsTravailOpen] = useState(true);
-  const [isVieQuotidienneOpen, setIsVieQuotidienneOpen] = useState(true);
+  const [openSections, setOpenSections] = useState({
+    personalInfo: true,
+    morphostatique: true,
+    anamnese: true,
+    travail: true,
+    vieQuotidienne: true,
+  });
+
+  useEffect(() => {
+    const fetchPatientData = async () => {
+      const patientData = await getPatientById(patientId);
+      if (patientData) {
+        setFormData({
+          id: patientData.id,
+          nom: patientData.nom,
+          prenom: patientData.prenom,
+          dateDeNaissance: patientData.date_naissance,
+          telephone: patientData.tel,
+          email: patientData.email,
+          kineId: patientData.kineid,
+          sexe: patientData.sexe,
+          carteVitale: patientData.carte_vitale,
+          adresse: `${patientData.adresse.rue}, ${patientData.adresse.ville}, ${patientData.adresse.code_postal}`,
+          taille: patientData.morphostatique.taille,
+          poids: patientData.morphostatique.poids,
+          lateralite: patientData.morphostatique.lateralite,
+          remarque: patientData.morphostatique.remarques,
+          histoireMaladie: patientData.anamnese.historique_maladie,
+          antecedentsMedicaux: patientData.anamnese.antecedents,
+          antecedentsChirurgicaux: patientData.anamnese.antecedents_chirurgicaux,
+          antecedentsFamiliaux: patientData.anamnese.antecedents_familiaux,
+          situationProfessionnelle: patientData.travail.profession,
+          typeTravail: [], // Remplissez selon vos besoins
+          profession: patientData.travail.profession,
+          lieuVie: [], // Remplissez selon vos besoins
+          aideExterieur: "", // Remplissez selon vos besoins
+          situation: [], // Remplissez selon vos besoins
+          sportLoisirs: patientData.travail.sport,
+        });
+      }
+    };
+
+    fetchPatientData();
+  }, [patientId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "typeTravail" || name === "situation" || name === "lieuVie") {
+    if (["typeTravail", "situation", "lieuVie"].includes(name)) {
       const updatedValues = formData[name].includes(value)
         ? formData[name].filter((item) => item !== value)
         : [...formData[name], value];
@@ -48,27 +93,135 @@ const PersonalInfo = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const updatedPatient = {
+        id: formData.id,
+      adresse: {
+        rue: formData.adresse.split(",")[0],
+        ville: formData.adresse.split(",")[1].trim(),
+        code_postal: formData.adresse.split(",")[2].trim(),
+      },
+      anamnese: {
+        historique_maladie: formData.histoireMaladie || "",
+        motif: formData.motif || "", // Assurez-vous d'avoir cette donnée
+        antecedents: formData.antecedentsMedicaux || "",
+        antecedents_familiaux: formData.antecedentsFamiliaux || "",
+      },
+      carte_vitale: formData.carteVitale || "", // Ajoutez une valeur par défaut si nécessaire
+      date_naissance: formData.dateDeNaissance, // Assurez-vous qu'il est bien formaté
+      email: formData.email,
+      kineid: formData.kineId,
+      morphostatique: {
+        taille: formData.taille || 0, // Assurez-vous que c'est un nombre valide
+        poids: formData.poids || 0, // Assurez-vous que c'est un nombre valide
+        lateralite: formData.lateralite || "droite", // Valeur par défaut si nécessaire
+        remarques: formData.remarque || "", // Valeur par défaut
+      },
+      nom: formData.nom,
+      prenom: formData.prenom,
+      sexe: formData.sexe || "homme", // Remplacez par la valeur appropriée
+      tel: formData.telephone,
+      travail: {
+        profession: formData.profession || "", // Valeur par défaut
+        sport: formData.sportLoisirs || "", // Valeur par défaut
+      },
+    };
+  
+    console.log("Objet patient à mettre à jour:", updatedPatient);
+  
+    const result = await updatePatient(updatedPatient);
+    if (result) {
+      console.log("Patient updated successfully:", result);
+    } else {
+      console.error("Failed to update patient");
+    }
+  };
+
+
   const toggleEdit = () => {
     setIsEditable(!isEditable);
   };
 
   const toggleBlock = (block) => {
-    if (block === "personalInfo") {
-      setIsPersonalInfoOpen(!isPersonalInfoOpen);
-    } else if (block === "morphostatique") {
-      setIsMorphostatiqueOpen(!isMorphostatiqueOpen);
-    } else if (block === "anamnese") {
-      setIsAnamneseOpen(!isAnamneseOpen);
-    } else if (block === "travail") {
-      setIsTravailOpen(!isTravailOpen);
-    } else if (block === "vieQuotidienne") {
-      setIsVieQuotidienneOpen(!isVieQuotidienneOpen);
-    }
+    setOpenSections({ ...openSections, [block]: !openSections[block] });
   };
+
+  const renderFormGroup = (label, type, name, value, placeholder = "") => (
+    <div className="form-group">
+      <label htmlFor={name}>{label}</label>
+      {type === "textarea" ? (
+        <textarea
+          id={name}
+          name={name}
+          value={value}
+          onChange={handleChange}
+          disabled={!isEditable}
+          placeholder={placeholder}
+        />
+      ) : (
+        <input
+          type={type}
+          id={name}
+          name={name}
+          value={value}
+          onChange={handleChange}
+          disabled={!isEditable}
+          placeholder={placeholder}
+        />
+      )}
+    </div>
+  );
+
+  const renderRadioGroup = (label, name, options) => (
+    <div className="form-group">
+      <label>{label}</label>
+      <div>
+        {options.map((option) => (
+          <label key={option.value}>
+            <input
+              type="radio"
+              name={name}
+              value={option.value}
+              checked={formData[name] === option.value}
+              onChange={handleChange}
+              disabled={!isEditable}
+            />
+            {option.label}
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderCheckboxGroup = (label, name, options) => (
+    <div className="form-group">
+      <label>{label}</label>
+      <div>
+        {options.map((option) => (
+          <label key={option.value}>
+            <input
+              type="checkbox"
+              name={name}
+              value={option.value}
+              checked={formData[name].includes(option.value)}
+              onChange={handleChange}
+              disabled={!isEditable}
+            />
+            {option.label}
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+
+ /* if (!user) {
+    return <div>Vous devez être connecté pour accéder à cette page</div>;
+  }*/
 
   return (
     <>
-      <Header />
+     <Header />
       <div className="fiche-kine-container">
         <h1>Fiche Client</h1>
 
@@ -82,80 +235,20 @@ const PersonalInfo = () => {
               Informations personnelles
             </h2>
           </div>
-          {isPersonalInfoOpen && (
+          {openSections.personalInfo && (
             <div className="personnal-info-details">
               <form className="personal-info-form">
-                <div className="form-group">
-                  <label htmlFor="nom">Nom</label>
-                  <input
-                    type="text"
-                    id="nom"
-                    name="nom"
-                    value={formData.nom}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="prenom">Prénom</label>
-                  <input
-                    type="text"
-                    id="prenom"
-                    name="prenom"
-                    value={formData.prenom}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="dateDeNaissance">Date de naissance</label>
-                  <input
-                    type="date"
-                    id="dateDeNaissance"
-                    name="dateDeNaissance"
-                    value={formData.dateDeNaissance}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="telephone">Numéro de téléphone</label>
-                  <input
-                    type="tel"
-                    id="telephone"
-                    name="telephone"
-                    value={formData.telephone}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="email">Adresse e-mail</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="adresse">Adresse</label>
-                  <input
-                    type="text"
-                    id="adresse"
-                    name="adresse"
-                    value={formData.adresse}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                  />
-                </div>
+                {renderFormGroup("Nom", "text", "nom", formData.nom)}
+                {renderFormGroup("Prénom", "text", "prenom", formData.prenom)}
+                {renderFormGroup("Date de naissance", "text", "dateDeNaissance", formData.dateDeNaissance.split("T")[0].split("-").reverse().join("-"), "Date de naissance")}
+            {renderFormGroup("Numéro de téléphone", "tel", "telephone", formData.telephone)}
+                {renderFormGroup("Adresse e-mail", "email", "email", formData.email)}
+                {renderFormGroup("Adresse", "text", "adresse", formData.adresse)}
               </form>
             </div>
           )}
-          <button className="edit-button" onClick={toggleEdit}>
-            {isEditable ? "Finir modification" : "Modifier"}
+          <button className="edit-button" onClick={isEditable ? handleSubmit : toggleEdit}>
+          {isEditable ? "Finir modification" : "Modifier"}
           </button>
         </div>
 
@@ -169,87 +262,22 @@ const PersonalInfo = () => {
               Morphostatique
             </h2>
           </div>
-          {isMorphostatiqueOpen && (
+          {openSections.morphostatique && (
             <div className="morphostatique-details">
               <form className="morphostatique-form">
-                <div className="form-group">
-                  <label htmlFor="taille">Taille</label>
-                  <input
-                    type="number"
-                    id="taille"
-                    name="taille"
-                    value={formData.taille}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                    placeholder="Taille en cm"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="poids">Poids</label>
-                  <input
-                    type="number"
-                    id="poids"
-                    name="poids"
-                    value={formData.poids}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                    placeholder="Poids en kg"
-                  />
-                </div>
-                <div className="form-group latéralité">
-                  <label>Latéralité</label>
-                  <div>
-                    <label>
-                      <input
-                        type="radio"
-                        name="lateralite"
-                        value="ambidestre"
-                        checked={formData.lateralite === "ambidestre"}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Ambidestre
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="lateralite"
-                        value="droitier"
-                        checked={formData.lateralite === "droitier"}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Droitier
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="lateralite"
-                        value="gaucher"
-                        checked={formData.lateralite === "gaucher"}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Gaucher
-                    </label>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="remarque">Remarque</label>
-                  <textarea
-                    id="remarque"
-                    name="remarque"
-                    value={formData.remarque}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                    placeholder="Ajouter une remarque"
-                  />
-                </div>
+                {renderFormGroup("Taille", "number", "taille", formData.taille, "Taille en cm")}
+                {renderFormGroup("Poids", "number", "poids", formData.poids, "Poids en kg")}
+                {renderRadioGroup("Latéralité", "lateralite", [
+                  { label: "Ambidestre", value: "ambidestre" },
+                  { label: "Droitier", value: "droitier" },
+                  { label: "Gaucher", value: "gaucher" },
+                ])}
+                {renderFormGroup("Remarque", "textarea", "remarque", formData.remarque, "Ajouter une remarque")}
               </form>
             </div>
           )}
-          <button className="edit-button" onClick={toggleEdit}>
-            {isEditable ? "Finir modification" : "Modifier"}
+          <button className="edit-button" onClick={isEditable ? handleSubmit : toggleEdit}>
+          {isEditable ? "Finir modification" : "Modifier"}
           </button>
         </div>
 
@@ -263,64 +291,21 @@ const PersonalInfo = () => {
               Anamnèse
             </h2>
           </div>
-          {isAnamneseOpen && (
+          {openSections.anamnese && (
             <div className="anamnese-details">
               <form className="anamnese-form">
-                <div className="form-group">
-                  <label htmlFor="histoireMaladie">Histoire de la maladie</label>
-                  <textarea
-                    id="histoireMaladie"
-                    name="histoireMaladie"
-                    value={formData.histoireMaladie}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                    placeholder="Décrire l'histoire de la maladie"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="antecedentsMedicaux">
-                    Antécédents médicaux
-                  </label>
-                  <textarea
-                    id="antecedentsMedicaux"
-                    name="antecedentsMedicaux"
-                    value={formData.antecedentsMedicaux}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                    placeholder="Décrire les antécédents médicaux"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="antecedentsChirurgicaux">
-                    Antécédents chirurgicaux
-                  </label>
-                  <textarea
-                    id="antecedentsChirurgicaux"
-                    name="antecedentsChirurgicaux"
-                    value={formData.antecedentsChirurgicaux}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                    placeholder="Décrire les antécédents chirurgicaux"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="antecedentsFamiliaux">
-                    Antécédents familiaux
-                  </label>
-                  <textarea
-                    id="antecedentsFamiliaux"
-                    name="antecedentsFamiliaux"
-                    value={formData.antecedentsFamiliaux}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                    placeholder="Décrire les antécédents familiaux"
-                  />
-                </div>
+                {renderFormGroup("Histoire de la maladie", "textarea", "histoireMaladie", formData.histoireMaladie, "Décrire l'histoire de la maladie")}
+                {renderFormGroup("Antécédents médicaux", "textarea", "antecedentsMedicaux", formData.antecedentsMedicaux, "Décrire les antécédents médicaux")}
+                {
+                 //{renderFormGroup("Antécédents chirurgicaux", "textarea", "antecedentsChirurgicaux", formData.antecedentsChirurgicaux, "Décrire les antécédents chirurgicaux")}
+
+                }
+                {renderFormGroup("Antécédents familiaux", "textarea", "antecedentsFamiliaux", formData.antecedentsFamiliaux, "Décrire les antécédents familiaux")}
               </form>
             </div>
           )}
-          <button className="edit-button" onClick={toggleEdit}>
-            {isEditable ? "Finir modification" : "Modifier"}
+          <button className="edit-button" onClick={isEditable ? handleSubmit : toggleEdit}>
+          {isEditable ? "Finir modification" : "Modifier"}
           </button>
         </div>
 
@@ -334,131 +319,27 @@ const PersonalInfo = () => {
               Travail
             </h2>
           </div>
-          {isTravailOpen && (
+          {openSections.travail && (
             <div className="travail-details">
               <form className="travail-form">
-                {/* Situation professionnelle (choix unique) */}
-                <div className="form-group">
-                  <label>Situation professionnelle</label>
-                  <div>
-                    <label>
-                      <input
-                        type="radio"
-                        name="situationProfessionnelle"
-                        value="actif"
-                        checked={formData.situationProfessionnelle === "actif"}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Actif
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="situationProfessionnelle"
-                        value="retraite"
-                        checked={formData.situationProfessionnelle === "retraite"}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Retraité
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="situationProfessionnelle"
-                        value="sansEmploi"
-                        checked={
-                          formData.situationProfessionnelle === "sansEmploi"
-                        }
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Sans emploi
-                    </label>
-                  </div>
-                </div>
-                {/* Type de travail (choix multiples) */}
-                <div className="form-group">
-                  <label>Type de travail</label>
-                  <div>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="typeTravail"
-                        value="sedentaires"
-                        checked={formData.typeTravail.includes("sedentaires")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Sédentaires
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="typeTravail"
-                        value="poste"
-                        checked={formData.typeTravail.includes("poste")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Posté
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="typeTravail"
-                        value="debout"
-                        checked={formData.typeTravail.includes("debout")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Debout
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="typeTravail"
-                        value="chargesLourdes"
-                        checked={formData.typeTravail.includes("chargesLourdes")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Charges lourdes
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="typeTravail"
-                        value="gestesRepétitifs"
-                        checked={formData.typeTravail.includes(
-                          "gestesRepétitifs"
-                        )}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Gestes répétitifs
-                    </label>
-                  </div>
-                </div>
-                {/* Profession */}
-                <div className="form-group">
-                  <label htmlFor="profession">Profession</label>
-                  <input
-                    type="text"
-                    id="profession"
-                    name="profession"
-                    value={formData.profession}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                    placeholder="Entrer la profession"
-                  />
-                </div>
+                {renderRadioGroup("Situation professionnelle", "situationProfessionnelle", [
+                  { label: "Actif", value: "actif" },
+                  { label: "Retraité", value: "retraite" },
+                  { label: "Sans emploi", value: "sansEmploi" },
+                ])}
+                {renderCheckboxGroup("Type de travail", "typeTravail", [
+                  { label: "Sédentaires", value: "sedentaires" },
+                  { label: "Posté", value: "poste" },
+                  { label: "Debout", value: "debout" },
+                  { label: "Charges lourdes", value: "chargesLourdes" },
+                  { label: "Gestes répétitifs", value: "gestesRepétitifs" },
+                ])}
+                {renderFormGroup("Profession", "text", "profession", formData.profession, "Entrer la profession")}
               </form>
             </div>
           )}
-          <button className="edit-button" onClick={toggleEdit}>
-            {isEditable ? "Finir modification" : "Modifier"}
+          <button className="edit-button" onClick={isEditable ? handleSubmit : toggleEdit}>
+          {isEditable ? "Finir modification" : "Modifier"}
           </button>
         </div>
 
@@ -472,239 +353,43 @@ const PersonalInfo = () => {
               Vie quotidienne
             </h2>
           </div>
-          {isVieQuotidienneOpen && (
+          {openSections.vieQuotidienne && (
             <div className="vie-quotidienne-details">
               <form className="vie-quotidienne-form">
-                {/* Lieu de vie (choix multiples) */}
-                <div className="form-group">
-                  <label>Lieu de vie</label>
-                  <div>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="lieuVie"
-                        value="Maison"
-                        checked={formData.lieuVie.includes("Maison")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Maison
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="lieuVie"
-                        value="Appartement"
-                        checked={formData.lieuVie.includes("Appartement")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Appartement
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="lieuVie"
-                        value="EHPAD"
-                        checked={formData.lieuVie.includes("EHPAD")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      EHPAD
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="lieuVie"
-                        value="RDC"
-                        checked={formData.lieuVie.includes("RDC")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      RDC
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="lieuVie"
-                        value="A l'étage"
-                        checked={formData.lieuVie.includes("A l'étage")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      A l'étage
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="lieuVie"
-                        value="Isolé"
-                        checked={formData.lieuVie.includes("Isolé")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Isolé
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="lieuVie"
-                        value="En famille"
-                        checked={formData.lieuVie.includes("En famille")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      En famille
-                    </label>
-                  </div>
-                </div>
-
-                {/* Aide extérieur (choix unique) */}
-                <div className="form-group">
-                  <label>Aide extérieur</label>
-                  <div>
-                    <label>
-                      <input
-                        type="radio"
-                        name="aideExterieur"
-                        value="Quotidienne"
-                        checked={formData.aideExterieur === "Quotidienne"}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Quotidienne
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="aideExterieur"
-                        value="Hebdomadaire"
-                        checked={formData.aideExterieur === "Hebdomadaire"}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Hebdomadaire
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="aideExterieur"
-                        value="pluri-hebdomadaire"
-                        checked={formData.aideExterieur === "pluri-hebdomadaire"}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Pluri-hebdomadaire
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="aideExterieur"
-                        value="Mensuel"
-                        checked={formData.aideExterieur === "Mensuel"}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Mensuel
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="aideExterieur"
-                        value="Permanente"
-                        checked={formData.aideExterieur === "Permanente"}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Permanente
-                    </label>
-                  </div>
-                </div>
-
-                {/* Situation (choix multiples) */}
-                <div className="form-group">
-                  <label>Situation</label>
-                  <div>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="situation"
-                        value="Célibataire"
-                        checked={formData.situation.includes("Célibataire")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Célibataire
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="situation"
-                        value="Marié"
-                        checked={formData.situation.includes("Marié")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Marié
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="situation"
-                        value="Avec enfant"
-                        checked={formData.situation.includes("Avec enfant")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Avec enfant
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="situation"
-                        value="Sans enfant"
-                        checked={formData.situation.includes("Sans enfant")}
-                        onChange={handleChange}
-                        disabled={!isEditable}
-                      />
-                      Sans enfant
-                    </label>
-                  </div>
-                </div>
-
-                {/* Zones de texte pour Sport et Loisirs et Remarque */}
-                <div className="form-group">
-                  <label htmlFor="sportLoisirs">Sport et loisirs</label>
-                  <textarea
-                    id="sportLoisirs"
-                    name="sportLoisirs"
-                    value={formData.sportLoisirs}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                    placeholder="Décrire les activités sportives et de loisirs"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="remarque">Remarque</label>
-                  <textarea
-                    id="remarque"
-                    name="remarque"
-                    value={formData.remarque}
-                    onChange={handleChange}
-                    disabled={!isEditable}
-                    placeholder="Ajouter une remarque"
-                  />
-                </div>
+                {renderCheckboxGroup("Lieu de vie", "lieuVie", [
+                  { label: "Maison", value: "Maison" },
+                  { label: "Appartement", value: "Appartement" },
+                  { label: "EHPAD", value: "EHPAD" },
+                  { label: "RDC", value: "RDC" },
+                  { label: "A l'étage", value: "A l'étage" },
+                  { label: "Isolé", value: "Isolé" },
+                  { label: "En famille", value: "En famille" },
+                ])}
+                {renderRadioGroup("Aide extérieur", "aideExterieur", [
+                  { label: "Quotidienne", value: "Quotidienne" },
+                  { label: "Hebdomadaire", value: "Hebdomadaire" },
+                  { label: "Pluri-hebdomadaire", value: "pluri-hebdomadaire" },
+                  { label: "Mensuel", value: "Mensuel" },
+                  { label: "Permanente", value: "Permanente" },
+                ])}
+                {renderCheckboxGroup("Situation", "situation", [
+                  { label: "Célibataire", value: "Célibataire" },
+                  { label: "Marié", value: "Marié" },
+                  { label: "Avec enfant", value: "Avec enfant" },
+                  { label: "Sans enfant", value: "Sans enfant" },
+                ])}
+                {renderFormGroup("Sport et loisirs", "textarea", "sportLoisirs", formData.sportLoisirs, "Décrire les activités sportives et de loisirs")}
+                {renderFormGroup("Remarque", "textarea", "remarque", formData.remarque, "Ajouter une remarque")}
               </form>
             </div>
           )}
-          <button className="edit-button" onClick={toggleEdit}>
-            {isEditable ? "Finir modification" : "Modifier"}
+          <button className="edit-button" onClick={isEditable ? handleSubmit : toggleEdit}>
+          {isEditable ? "Finir modification" : "Modifier"}
           </button>
         </div>
       </div>
       <Footer />
-  </>
+    </>
   );
 };
 
