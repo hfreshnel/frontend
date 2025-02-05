@@ -1,4 +1,5 @@
 const API_URL = "http://localhost:8080";
+const API_2_URL = "http://localhost:8000";
 
 //post new kine
 export const postNewKine = async (kine) => {
@@ -219,7 +220,7 @@ export const sendAudioToAPI = async (blob) => {
   formData.append('file', blob, 'recording.wav');
 
   try {
-    const response = await fetch('http://localhost:8000/transcription/speech-to-text/', {
+    const response = await fetch(`${API_2_URL}/transcription/speech-to-text/`, {
       method: 'POST',
       body: formData,
     });
@@ -233,7 +234,7 @@ export const sendAudioToAPI = async (blob) => {
     console.log(result.transcription);
       // Envoyer la transcription à une deuxième API
       try {
-        const sendTextToAPI = await fetch('http://localhost:8082/ner_task/extract_entities', {
+        const sendTextToAPI = await fetch(`${API_URL}/ner_task/extract_entities`, {
           method: 'POST',
           headers: {
             "Content-Type": "application/json"

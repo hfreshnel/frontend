@@ -4,7 +4,7 @@ import micOff from "../../assets/images/mic_off.svg";
 import { sendAudioToAPI } from "../../api/fetching";
 import "./microphone.css";
 
-const Microphone = ({ updatePatient  }) => {
+const Microphone = ({ updatePatient, handleMicrophoneUpdate  }) => {
     const [isRecording, setIsRecording] = useState(false);
     const [audioURL, setAudioURL] = useState(null);
     const mediaRecorder = useRef(null);
@@ -43,38 +43,47 @@ const Microphone = ({ updatePatient  }) => {
         
                 try {
                     const response = await sendAudioToAPI(audioBlob);
-                    console.log('Audio sent to API:', response);
-        
-                    updatePatient((prevPatient) => ({
+                    console.log('Audio Response', response);
+                    const dateConvertie = convertirDate(response["Date de naissance"]);
+                    console.log('Date convertie:', dateConvertie);
+                    updatePatient((prevPatient) => {
+                        const updatedPatient = {
                         ...prevPatient,
-                        nom: response.personne?.split(' ')[1] || prevPatient.nom,
-                        prenom: response.personne?.split(' ')[0] || prevPatient.prenom,
-                        date_naissance: prevPatient.date_naissance,
-                        tel: response["Numéro de téléphone"] || prevPatient.tel,
-                        email: response.Email || prevPatient.email,
+                        nom: response.personne != null ? response.personne.split(' ')[1] : prevPatient.nom,
+                        prenom: response.personne != null ? response.personne.split(' ')[0] : prevPatient.prenom,
+                        date_naissance: response["Date de naissance"] != null ? convertirDate(response["Date de naissance"]) : prevPatient.date_naissance,
+                        tel: response["Numéro de téléphone"] != null ? response["Numéro de téléphone"] : prevPatient.tel,
+                        email: response.Email != null ? response.Email : prevPatient.email,
                         adresse: {
                             ...prevPatient.adresse,
-                            rue: response.Adresse || prevPatient.adresse.rue,
-                            ville: response.Ville || prevPatient.adresse.ville,
+                            rue: response.Adresse != null ? response.Adresse : prevPatient.adresse.rue,
+                            ville: response.Ville != null ? response.Ville : prevPatient.adresse.ville,                 
                             code_postal: response["Code Postal"] || prevPatient.adresse.code_postal
                         },
                         morphostatique: {
                             ...prevPatient.morphostatique,
-                            taille: response.Taille || prevPatient.morphostatique.taille,
-                            poids: response.Poids || prevPatient.morphostatique.poids,
-                            lateralite: response.Latéralité || prevPatient.morphostatique.lateralite
+                            taille: response.Taille != null ? response.Taille : prevPatient.morphostatique.taille, 
+                            poids: response.Poids != null ? response.Poids : prevPatient.morphostatique.poids,
+                            lateralite: response["Latéralité"] != null ? response["Latéralité"] : prevPatient.morphostatique.lateralite
+                            
                         },
                         anamnese: {
                             ...prevPatient.anamnese,
-                            historique_maladie: response.Maladie || prevPatient.anamnese.historique_maladie,
-                            symptomes: response.Symptômes || prevPatient.anamnese.symptomes
+                            historique_maladie: response.Maladie != null ? response.Maladie : prevPatient.anamnese.historique_maladie,
+                            symptomes: response["Symptômes"] != null ? response["Symptômes"] : prevPatient.anamnese.symptomes
                         },
                         travail: {
                             ...prevPatient.travail,
-                            profession: response.Profession || prevPatient.travail.profession,
-                            sport: response["Sport et loisirs"] || prevPatient.travail.sport
+                            profession: response.Profession != null ? response.Profession : prevPatient.travail.profession,
+                            sport: response["Sport et loisirs"] != null ? response["Sport et loisirs"] : prevPatient.travail.sport
+                            
                         }
-                    }));
+                    };
+                    
+                    console.log('Updated Patient:', updatedPatient);
+                    handleMicrophoneUpdate(updatedPatient);
+                    return updatedPatient;
+                });
                 } catch (error) {
                     console.error('Failed to send audio to API:', error);
                 }
