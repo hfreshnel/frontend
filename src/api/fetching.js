@@ -144,6 +144,24 @@ export const getConsultations = async (patientId) => {
   }
 };
 
+//get bdk files with consultation id
+ export const getBDKFiles = async (consultationId) => {
+  try {
+    const response = await fetch(`${API_URL}/consultation/download/${consultationId}`);
+    console.log("Request", `${API_URL}/consultation/download/${consultationId}`);
+    if (!response.ok) {
+      throw new Error("Failed to get BDK files");
+    }
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    console.log("bdk file URL", url);
+    return url;
+  } catch (error) {
+    console.error("Failed to get BDK files", error);
+    return null;
+  }
+};
+
 //post new consultation
 export const postNewConsultation = async (consultation) => {
   try {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../../AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { getPatientById, getConsultations } from "../../../api/fetching";
+import { getPatientById, getConsultations, getBDKFiles } from "../../../api/fetching";
 import './dashboard.css';
 //import articularImage from "../../../assets/images/articulaire.png";
 //import postureImage from '../../../assets/images/posture.jpg';
@@ -51,6 +51,19 @@ function Dashboard(){
     const gotoPatientFiche = (patient) => { 
         navigate(`/patient/${patient.id}/fiche`);
     };
+
+    const displayBDKFiles = async (consultationId) => {
+        try {
+            const fileUrl = await getBDKFiles(consultationId);
+            if (fileUrl) {
+                window.open(fileUrl, '_blank');
+            } else {
+                console.error('Failed to get BDK file URL');
+            }
+        } catch (error) {
+            console.error('Error displaying BDK file', error);
+        }
+    }
 
     if (!user) {
         console.error('User not found in AuthContext');
@@ -106,16 +119,17 @@ function Dashboard(){
                     <ul className="consultations-list">
                         {consultations.map((consultation, index) => (
                             <li key={index} className="consultation-item">
-                                <span>Session {consultation.session}</span>
-                                <span>{consultation.date}</span>
-                                <a
-                                    href={consultation.pdf}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                <span>Session {index +1} {consultation.session}</span>
+                                <span>{new Date(consultation.date_consultation).toLocaleDateString()}</span>
+                                <button
                                     className="pdf-link"
+                                    onClick={ (e) => {
+                                        e.preventDefault();
+                                        displayBDKFiles(consultation.id);
+                                    }}
                                 >
-                                    {consultation.pdf}
-                                </a>
+                                    bilan articulaire
+                                </button>
                             </li>
                         ))}
                     </ul>
