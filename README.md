@@ -1,70 +1,109 @@
-# Getting Started with Create React App
+# Application de Gestion des Dossiers Patients en Kinésithérapie
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Une application web basée sur React qui permet aux kinésithérapeutes de gérer leurs patients, leurs consultations et leurs bilans articulaires, avec intégration de fonctionnalités multimédia (capture vidéo et audio).
 
-## Available Scripts
+## Table des Matières
 
-In the project directory, you can run:
+- [Description](#description)
+- [Fonctionnalités](#fonctionnalités)
+- [Technologies Utilisées](#technologies-utilisées)
+- [Installation](#installation)
+- [Utilisation](#utilisation)
+- [Structure du Projet](#structure-du-projet)
+- [Tests](#tests)
+- [Contribution](#contribution)
+- [Licence](#licence)
+- [Contact](#contact)
 
-### `npm start`
+## Description
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Cette application permet aux kinésithérapeutes de :
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- S'inscrire et se connecter pour accéder à leur espace personnel.
+- Consulter et mettre à jour leur profil.
+- Gérer la liste de leurs patients et accéder aux fiches détaillées de chaque patient.
+- Créer de nouveaux dossiers patients via un formulaire multi-section, incluant la saisie vocale pour enrichir automatiquement les informations.
+- Gérer les consultations et intégrer des bilans articulaires basés sur la capture vidéo via webcam.
+- Télécharger et visualiser des fichiers de bilans articulaires (BDK) et obtenir des mesures d'angles (flexion et extension).
 
-### `npm test`
+## Fonctionnalités
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Authentification & Inscription**
 
-### `npm run build`
+  - Connexion et déconnexion sécurisées.
+  - Inscription de nouveaux kinésithérapeutes avec validation des données.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Gestion des Patients**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  - Visualisation de la liste des patients associés.
+  - Recherche et filtrage des patients.
+  - Fiche client détaillée avec possibilité d'édition.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Consultations**
 
-### `npm run eject`
+  - Création et enregistrement de consultations.
+  - Intégration des bilans articulaires et affichage des mesures (angles de flexion et d'extension).
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **Nouveau Patient**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  - Formulaire multi-section pour la création d’un dossier patient.
+  - Saisie dynamique avec formulaires réutilisables et sections repliables.
+  - Intégration d'un module de saisie vocale via microphone pour extraire et mettre à jour automatiquement certaines informations.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- **Bilan Articulaire (BDK)**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+  - Capture vidéo via webcam avec sélection du périphérique.
+  - Enregistrement et upload d'extraits vidéo.
+  - Traitement des vidéos pour calculer les angles articulaires.
 
-## Learn More
+- **Interface Utilisateur**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  - Design responsive et moderne.
+  - Navigation intuitive via un header commun (logo, navigation, déconnexion).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Technologies Utilisées
 
-### Code Splitting
+- **Frontend :**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+  - React, React Router
+  - Context API ou Redux
+  - CSS / SASS
 
-### Analyzing the Bundle Size
+- **Backend & API :**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+  - API RESTful en JSON
+  - Gestion de l’authentification (JWT, OAuth, etc.)
 
-### Making a Progressive Web App
+- **Outils de Développement :**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+  - Webpack / Vite
+  - ESLint & Prettier
+  - Git, Jest, React Testing Library
 
-### Advanced Configuration
+## Installation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. **Cloner le dépôt :**
 
-### Deployment
+   ```bash
+   git clone https://votre-url-de-repository.git
+   cd votre-repository
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+2. **Installer les dépendances :**
 
-### `npm run build` fails to minify
+   ```bash
+   npm install
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+3. **Lancer l'application en mode développement :**
+
+   ```bash
+   npm start
+   ```
+
+   L'application sera accessible via `http://localhost:3000`.
+
+## Contact
+
+Pour toute question, contactez l'équipe à [mahouna-wilfried.houenou@groupe-esigelec.org](mailto\:mahouna-wilfried.houenou@groupe-esigelec.org).
+
