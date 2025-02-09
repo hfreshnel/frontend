@@ -10,10 +10,16 @@ import { sections } from "../../assets/templates/form_template";
 import { postNewPatient } from "../../api/fetching";
 import Microphone from "../../components/microphone/microphone";
 
+/**
+ * PersonalInfo component handles the creation of a new patient.
+ * It includes form sections for different patient information categories.
+ * It also integrates a microphone component for voice input.
+ */
 const PersonalInfo = () => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
 
+    // State to hold new patient information
     const [newPatient, setNewPatient] = useState({
         nom: "",
         prenom: "",
@@ -45,39 +51,52 @@ const PersonalInfo = () => {
             sport: ""
         }
     });
+
+    /**
+     * Handle microphone data update.
+     * Merges the updated patient data received from the microphone with the existing state.
+     * @param {Object} updatedPatient - The updated patient data from the microphone.
+     */
     const handleMicrophoneUpdate = (updatedPatient) => {
-      console.log("🔵 Données reçues du microphone :", updatedPatient); // 🔍 Debug avant update
-  
-      setNewPatient((prevPatient) => {
-          const mergedPatient = {
-              ...prevPatient,
-              ...updatedPatient,
-              adresse: { 
-                ...prevPatient.adresse, 
-                ...updatedPatient.adresse 
-            },
-            morphostatique: { 
-                ...prevPatient.morphostatique, 
-                ...updatedPatient.morphostatique 
-            },
-            anamnese: { 
-                ...prevPatient.anamnese, 
-                ...updatedPatient.anamnese 
-            },
-            travail: { 
-                ...prevPatient.travail, 
-                ...updatedPatient.travail 
-            }
-          };
-          console.log("🟢 Patient mis à jour après fusion :", mergedPatient); // 🔍 Debug après fusion
-          return mergedPatient;
-      });
-  };
-  
-  // Vérifier l’état après mise à jour avec le microphone
-  React.useEffect(() => {
-      console.log("🟡 État mis à jour de newPatient :", newPatient);
-  }, [newPatient]);
+        console.log("🔵 Données reçues du microphone :", updatedPatient);
+
+        setNewPatient((prevPatient) => {
+            const mergedPatient = {
+                ...prevPatient,
+                ...updatedPatient,
+                adresse: { 
+                    ...prevPatient.adresse, 
+                    ...updatedPatient.adresse 
+                },
+                morphostatique: { 
+                    ...prevPatient.morphostatique, 
+                    ...updatedPatient.morphostatique 
+                },
+                anamnese: { 
+                    ...prevPatient.anamnese, 
+                    ...updatedPatient.anamnese 
+                },
+                travail: { 
+                    ...prevPatient.travail, 
+                    ...updatedPatient.travail 
+                }
+            };
+            console.log("🟢 Patient mis à jour après fusion :", mergedPatient);
+            return mergedPatient;
+        });
+    };
+
+    // Log the updated state of newPatient whenever it changes
+    React.useEffect(() => {
+        console.log("🟡 État mis à jour de newPatient :", newPatient);
+    }, [newPatient]);
+
+    /**
+     * Handle form submission.
+     * Updates the newPatient state based on the form data and posts the new patient data to the server.
+     * @param {Event} e - The form submission event.
+     * @param {string} sectionName - The name of the form section being submitted.
+     */
     const handleOnsubmit = (e, sectionName) => {
         e.preventDefault();
         const formData = new FormData(e.target);

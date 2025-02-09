@@ -4,15 +4,29 @@ import { AuthContext } from "../../AuthContext";
 import "./login.css"
 import logo from "../../assets/images/logo_1.png";
 
-
+// Login component
+/**
+ * Login component renders a login form and handles user authentication.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <Login />
+ * )
+ */
 function Login(){
     const navigate = useNavigate();
-
     const { login } = useContext(AuthContext);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
 
+    // Handle login form submission
+    /**
+     * Handles the form submission for user login.
+     * 
+     * @param {Object} e - The event object.
+     */
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
@@ -56,7 +70,6 @@ function Login(){
                 <a href="/register" className="register-link">Inscrivez-vous ici</a> 
                 </p>
             </div>
-
         </div>
     );
 }

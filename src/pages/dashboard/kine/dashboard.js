@@ -6,6 +6,13 @@ import Header from '../../../components/header/header';
 import Footer from '../../../components/footer/footer';
 import './dashboard.css';
 
+/**
+ * Dashboard component for displaying and managing patients.
+ * 
+ * This component fetches and displays a list of patients associated with the logged-in user.
+ * It provides functionality to search for patients, add a new patient, and select a patient
+ * to view more details.
+ */
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,6 +20,9 @@ const Dashboard = () => {
   const [patientList, setPatientList] = useState([]);
 
   useEffect(() => {
+    /**
+     * Fetches the list of patients for the logged-in user.
+     */
     const fetchPatients = async () => {
       if (user && user.id) {
         const patients = await getPatients(user.id);
@@ -34,16 +44,28 @@ const Dashboard = () => {
     return <h1>You are not logged in.</h1>;
   }
 
+  /**
+   * Handles the search input change event.
+   * 
+   * @param {Object} event - The input change event.
+   */
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
 
+  /**
+   * Navigates to the add new patient page.
+   */
   const handleAddPatient = () => {
     navigate('/dashboard/patient/new');
   };
 
+  /**
+   * Navigates to the selected patient's detail page.
+   * 
+   * @param {string} patientId - The ID of the selected patient.
+   */
   const handleSelectPatient = (patientId) => {
-    // Navigate to the patient's details page with the selected patient's ID
     navigate(`/dashboard/patient/${patientId}`);
   };
 

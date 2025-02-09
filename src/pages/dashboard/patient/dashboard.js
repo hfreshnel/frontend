@@ -3,11 +3,15 @@ import { AuthContext } from "../../../AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { getPatientById, getConsultations, getBDKFiles } from "../../../api/fetching";
 import './dashboard.css';
-//import articularImage from "../../../assets/images/articulaire.png";
-//import postureImage from '../../../assets/images/posture.jpg';
 import Header from '../../../components/header/header';
 import Footer from '../../../components/footer/footer';
 
+/**
+ * Dashboard component for displaying patient information and consultations.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered component.
+ */
 function Dashboard(){
     const { user } = useContext(AuthContext);
     const navigate = useNavigate(); 
@@ -16,7 +20,9 @@ function Dashboard(){
     const [patient, setPatient] = useState(null);
     const [consultations, setConsultations] = useState([]);
 
-
+    /**
+     * Fetch patient and consultations data when component mounts or patientId changes.
+     */
     useEffect(() => {
         const fetchPatient = async () => {
           if (patientId) {
@@ -38,20 +44,38 @@ function Dashboard(){
         fetchConsultations();
       }, [patientId]);
 
+    /**
+     * Toggle the visibility of the dropdown menu.
+     */
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
     };
 
+    /**
+     * Handle option click in the dropdown menu.
+     * 
+     * @param {Object} patient - The patient object.
+     * @param {number} option - The selected option.
+     */
     const handleOptionClick = (patient, option) => {
-        // Perform the desired action based on the selected option
-        setShowDropdown(false); // Close the dropdown
+        setShowDropdown(false);
         navigate(`/patient/${patient.id}/new_bdk/${option}`);
     };
 
+    /**
+     * Navigate to the patient's fiche page.
+     * 
+     * @param {Object} patient - The patient object.
+     */
     const gotoPatientFiche = (patient) => { 
         navigate(`/patient/${patient.id}/fiche`);
     };
 
+    /**
+     * Display BDK files for a given consultation.
+     * 
+     * @param {number} consultationId - The ID of the consultation.
+     */
     const displayBDKFiles = async (consultationId) => {
         try {
             const fileUrl = await getBDKFiles(consultationId);
@@ -112,7 +136,6 @@ function Dashboard(){
                         Informations du patient
                     </button>
                 </div>
-                
                 {/* New List Section */}
                 <div className="consultations-section">
                     <h2 className="consultations-title">Liste de consultations</h2>

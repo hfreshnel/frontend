@@ -1,12 +1,16 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../AuthContext";
-import { uploadVideo } from "../../api/fetching"; // Import the uploadVideo function
+import { uploadVideo } from "../../api/fetching";
 import "./bdk.css";
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 
-
+/**
+ * BDK component handles the webcam management and video upload.
+ * It fetches patient ID and option from the URL parameters.
+ * It also manages the state of angles and video devices.
+ */
 const BDK = () => {
   const { user } = useContext(AuthContext);
   const [isCameraOn, setIsCameraOn] = useState(false);
@@ -29,7 +33,9 @@ const BDK = () => {
   const streamRef = useRef(null);
   const navigate = useNavigate();
 
-  // Liste des caméras disponibles
+  /**
+   * Lists available video devices.
+   */
   const listDevices = async () => {
     const devices = await navigator.mediaDevices.enumerateDevices();
     const videos = devices.filter((device) => device.kind === "videoinput");
@@ -41,7 +47,9 @@ const BDK = () => {
     listDevices();
   }, []);
 
-  // Activer la webcam
+  /**
+   * Starts the webcam.
+   */
   const startCamera = async () => {
     try {
       const constraints = selectedDeviceId
@@ -72,7 +80,9 @@ const BDK = () => {
     }
   };
 
-  // Désactiver la webcam
+  /**
+   * Stops the webcam and uploads the recorded video.
+   */
   const stopCamera = async () => {
     if (streamRef.current) {
       const tracks = streamRef.current.getTracks();
@@ -115,6 +125,9 @@ const BDK = () => {
     }
   };
 
+  /**
+   * Handles validation and navigation to the consultation page.
+   */
   const handleValidation = () => {
     navigate(`/patient/${patientId}/consultation`, { state: { angles } });
   };
@@ -160,8 +173,6 @@ const BDK = () => {
           Stop
         </button>
       </div>
-
-      {/* Tableau en dessous des boutons */}
       <table className="bdk-table">
         <thead>
           <tr>

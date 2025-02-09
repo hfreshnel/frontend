@@ -1,12 +1,21 @@
-import React, { useState, useContext, useEffect, use } from "react";
+/**
+ * This component renders the personal information form for a Kine user.
+ * It allows the user to view and edit their personal information.
+ */
+
+import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../AuthContext";
 import { updateKine } from "../../../api/fetching";
-import { Link } from "react-router-dom";
 import "./FicheKine.css";
 import Header from '../../../components/header/header';
 import Footer from '../../../components/footer/footer';
 
-
+/**
+ * PersonalInfo component
+ * 
+ * This component fetches the user's personal information from the AuthContext,
+ * displays it in a form, and allows the user to edit and save the information.
+ */
 const PersonalInfo = () => {
   const { user, setUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({
@@ -25,6 +34,12 @@ const PersonalInfo = () => {
 
   const [isEditable, setIsEditable] = useState(false);
 
+  /**
+   * Handles changes to the form inputs.
+   * Updates the formData state with the new input values.
+   * 
+   * @param {Object} e - The event object from the input change.
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name in formData.adresse) {
@@ -34,6 +49,10 @@ const PersonalInfo = () => {
     }
   };
 
+  /**
+   * Toggles the edit mode.
+   * If the form is in edit mode, it saves the changes by calling the updateKine API.
+   */
   const toggleEdit = async () => {
     if (isEditable) {
       try {
@@ -46,6 +65,10 @@ const PersonalInfo = () => {
     setIsEditable(!isEditable);
   };
 
+  /**
+   * Fetches the user data from AuthContext and sets it to the formData state.
+   * This effect runs whenever the user object changes.
+   */
   useEffect(() => {
     if (user) {
       setFormData({
@@ -78,6 +101,7 @@ const PersonalInfo = () => {
         <div className="personal-info-container">
           <h2>Informations personnelles</h2>
           <form className="personal-info-form">
+            {/* Form fields for personal information */}
             <div className="form-group">
               <label htmlFor="nom">Nom</label>
               <input

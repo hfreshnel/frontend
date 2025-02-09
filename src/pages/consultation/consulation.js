@@ -1,23 +1,32 @@
 import React from 'react';
-import { useNavigate, useParams, useLocation } from 'react-router-dom'; // Import useLocation
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { postNewConsultation } from '../../api/fetching';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import "./consultation.css"
 import { Form } from 'react-router-dom';
 
+/**
+ * Consultation component handles the creation of a new consultation.
+ * It fetches patient ID and angles from the URL parameters and location state respectively.
+ * It also handles form submission to create a new consultation.
+ */
 const Consultation = () => {
   const { patientId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const angles = location.state?.angles; // Retrieve angles from location state
+  const angles = location.state?.angles;
   console.log(angles);
 
+  /**
+   * Handles form submission to create a new consultation.
+   * @param {Event} event - The form submission event.
+   */
   const handleOnsubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = {
-      date_consultation: new Date().toISOString().split('T')[0], // Use current date
+      date_consultation: new Date().toISOString().split('T')[0],
       douleur_duree: formData.get('douleur_duree'),
       douleur_niveau: parseInt(formData.get('douleur_niveau')),
       extension: {

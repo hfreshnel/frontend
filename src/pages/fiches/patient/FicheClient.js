@@ -1,10 +1,14 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./FicheClient.css";
 import { getPatientById, updatePatient } from "../../../api/fetching";
-import Header from "../../../components/header/header"; 
+import Header from "../../../components/header/header";
 import Footer from "../../../components/footer/footer";
 
+/**
+ * PersonalInfo component fetches and displays patient information.
+ * It allows editing and updating patient details.
+ */
 const PersonalInfo = () => {
   const { patientId } = useParams();
   const [formData, setFormData] = useState({
@@ -44,6 +48,9 @@ const PersonalInfo = () => {
     vieQuotidienne: true,
   });
 
+  /**
+   * Fetch patient data by ID and update formData state.
+   */
   useEffect(() => {
     const fetchPatientData = async () => {
       const patientData = await getPatientById(patientId);
@@ -68,11 +75,11 @@ const PersonalInfo = () => {
           antecedentsChirurgicaux: patientData.anamnese.antecedents_chirurgicaux,
           antecedentsFamiliaux: patientData.anamnese.antecedents_familiaux,
           situationProfessionnelle: patientData.travail.profession,
-          typeTravail: [], // Remplissez selon vos besoins
+          typeTravail: [],
           profession: patientData.travail.profession,
-          lieuVie: [], // Remplissez selon vos besoins
-          aideExterieur: "", // Remplissez selon vos besoins
-          situation: [], // Remplissez selon vos besoins
+          lieuVie: [],
+          aideExterieur: "", 
+          situation: [],
           sportLoisirs: patientData.travail.sport,
         });
       }
@@ -81,6 +88,10 @@ const PersonalInfo = () => {
     fetchPatientData();
   }, [patientId]);
 
+  /**
+   * Handle form input change.
+   * @param {Object} e - Event object
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (["typeTravail", "situation", "lieuVie"].includes(name)) {
@@ -93,6 +104,10 @@ const PersonalInfo = () => {
     }
   };
 
+  /**
+   * Handle form submission to update patient data.
+   * @param {Object} e - Event object
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     const updatedPatient = {
@@ -104,27 +119,27 @@ const PersonalInfo = () => {
       },
       anamnese: {
         historique_maladie: formData.histoireMaladie || "",
-        motif: formData.motif || "", // Assurez-vous d'avoir cette donnée
+        motif: formData.motif || "",
         antecedents: formData.antecedentsMedicaux || "",
         antecedents_familiaux: formData.antecedentsFamiliaux || "",
       },
-      carte_vitale: formData.carteVitale || "", // Ajoutez une valeur par défaut si nécessaire
-      date_naissance: formData.dateDeNaissance, // Assurez-vous qu'il est bien formaté
+      carte_vitale: formData.carteVitale || "",
+      date_naissance: formData.dateDeNaissance,
       email: formData.email,
       kineid: formData.kineId,
       morphostatique: {
-        taille: formData.taille || 0, // Assurez-vous que c'est un nombre valide
-        poids: formData.poids || 0, // Assurez-vous que c'est un nombre valide
-        lateralite: formData.lateralite || "droite", // Valeur par défaut si nécessaire
-        remarques: formData.remarque || "", // Valeur par défaut
+        taille: formData.taille || 0, 
+        poids: formData.poids || 0, 
+        lateralite: formData.lateralite || "droite", 
+        remarques: formData.remarque || "",
       },
       nom: formData.nom,
       prenom: formData.prenom,
-      sexe: formData.sexe || "homme", // Remplacez par la valeur appropriée
+      sexe: formData.sexe || "homme", 
       tel: formData.telephone,
       travail: {
-        profession: formData.profession || "", // Valeur par défaut
-        sport: formData.sportLoisirs || "", // Valeur par défaut
+        profession: formData.profession || "", 
+        sport: formData.sportLoisirs || "", 
       },
     };
   
@@ -138,15 +153,30 @@ const PersonalInfo = () => {
     }
   };
 
-
+  /**
+   * Toggle edit mode.
+   */
   const toggleEdit = () => {
     setIsEditable(!isEditable);
   };
 
+  /**
+   * Toggle visibility of a section.
+   * @param {string} block - Section name
+   */
   const toggleBlock = (block) => {
     setOpenSections({ ...openSections, [block]: !openSections[block] });
   };
 
+  /**
+   * Render a form group with label and input/textarea.
+   * @param {string} label - Label text
+   * @param {string} type - Input type
+   * @param {string} name - Input name
+   * @param {string} value - Input value
+   * @param {string} [placeholder=""] - Input placeholder
+   * @returns {JSX.Element} Form group element
+   */
   const renderFormGroup = (label, type, name, value, placeholder = "") => (
     <div className="form-group">
       <label htmlFor={name}>{label}</label>
@@ -173,6 +203,13 @@ const PersonalInfo = () => {
     </div>
   );
 
+  /**
+   * Render a radio button group.
+   * @param {string} label - Label text
+   * @param {string} name - Input name
+   * @param {Array} options - Array of options with label and value
+   * @returns {JSX.Element} Radio group element
+   */
   const renderRadioGroup = (label, name, options) => (
     <div className="form-group">
       <label>{label}</label>
@@ -194,6 +231,13 @@ const PersonalInfo = () => {
     </div>
   );
 
+  /**
+   * Render a checkbox group.
+   * @param {string} label - Label text
+   * @param {string} name - Input name
+   * @param {Array} options - Array of options with label and value
+   * @returns {JSX.Element} Checkbox group element
+   */
   const renderCheckboxGroup = (label, name, options) => (
     <div className="form-group">
       <label>{label}</label>
@@ -215,8 +259,10 @@ const PersonalInfo = () => {
     </div>
   );
 
- /* if (!user) {
-    return <div>Vous devez être connecté pour accéder à cette page</div>;
+  /*if (!user) {
+    return (
+    <div>Vous devez être connecté pour accéder à cette page</div>
+  );
   }*/
 
   return (

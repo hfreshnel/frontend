@@ -4,6 +4,15 @@ import { postNewKine } from "../../api/fetching";
 import "./register.css";
 import logo from "../../assets/images/logo_1.png";
 
+/**
+ * SignUp component for user registration.
+ * 
+ * This component renders a form for new user registration, including fields for
+ * name, email, and password. It handles form submission, input validation,
+ * and navigation after successful registration.
+ * 
+ * @returns {JSX.Element} The rendered SignUp component.
+ */
 function SignUp() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
@@ -18,13 +27,23 @@ function SignUp() {
         ville: ""
     });
 
+    /**
+     * Handles the registration form submission.
+     * 
+     * This function prevents the default form submission, validates the passwords,
+     * creates a new kine object, and attempts to register the user via an API call.
+     * If successful, it logs the response and navigates to the home page.
+     * 
+     * @param {Event} e - The form submission event.
+     * @returns {Promise<void>}
+     */
     const handleRegister = async (e) => {
         e.preventDefault();
         if (password !== confirmPassword) {
           alert("Passwords do not match");
           return;
         }
-    
+
         const newKine = {
           email,
           mdp: password,
@@ -33,7 +52,7 @@ function SignUp() {
           tel: "",
           adresse
         };
-    
+
         const response = await postNewKine(newKine);
         if (response) {
           console.log('Kine registered successfully:', response);
@@ -43,8 +62,28 @@ function SignUp() {
         }
     };
 
+    /**
+     * Handles changes to the email input field.
+     * 
+     * @param {Event} e - The input change event.
+     */
     const handleEmailChange = (e) => setEmail(e.target.value);
+
+    /**
+     * Handles changes to the password input field.
+     * 
+     * @param {Event} e - The input change event.
+     */
     const handlePasswordChange = (e) => setPassword(e.target.value);
+
+    /**
+     * Handles changes to the confirm password input field.
+     * 
+     * This function updates the confirmPassword state and checks if it matches
+     * the password, updating the isMatch state accordingly.
+     * 
+     * @param {Event} e - The input change event.
+     */
     const handleConfirmPasswordChange = (e) => {
         const value = e.target.value;
         setConfirmPassword(value);
